@@ -1,0 +1,58 @@
+{
+  "name": "react31032020",
+  "version": "1.0.0",
+  "description": "Учебный проект",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "webpack",
+    "test": "jest",
+    "prettier": "prettier --check ./src/**/*.ts",
+    "prettier-fix": "prettier --write ."
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-typescript"
+    ],
+    "plugins": []
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maxim1989/react31032020.git"
+  },
+  "keywords": [
+    "otus",
+    "reactjs",
+    "redux",
+    "webpack",
+    "babel"
+  ],
+  "author": "Fedorov Maksim",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maxim1989/react31032020/issues"
+  },
+  "homepage": "https://github.com/maxim1989/react31032020#readme",
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
+    "@babel/preset-typescript": "^7.9.0",
+    "@types/jest": "^25.2.1",
+    "@typescript-eslint/eslint-plugin": "^2.26.0",
+    "@typescript-eslint/parser": "^2.26.0",
+    "babel-jest": "^25.2.6",
+    "babel-loader": "^8.1.0",
+    "eslint": "^6.8.0",
+    "eslint-plugin-react": "^7.19.0",
+    "jest": "^25.2.7",
+    "prettier": "2.0.2",
+    "typescript": "^3.8.3",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.ts?$": "babel-jest"
+    }
+  }
+}
