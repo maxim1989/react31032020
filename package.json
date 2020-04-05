@@ -8,7 +8,9 @@
     "build": "webpack",
     "test": "jest",
     "prettier": "prettier --check ./src/**/*.ts",
-    "prettier-fix": "prettier --write ."
+    "prettier-fix": "prettier --write .",
+    "eslint": "npx eslint ./src/**/*.ts",
+    "eslint-fix": "npx eslint --fix ./src/**/*.ts"
   },
   "babel": {
     "presets": [
