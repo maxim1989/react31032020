@@ -1,11 +1,17 @@
-import prepareContent from "./index";
+import prepareContent from './index';
 
-describe("First tes suit:", () => {
-  it("First test case:", () => {
-    const element = document.createElement("div");
+describe('index.ts:', () => {
+  it('function prepareContent, innerHtml:', () => {
+    const element: HTMLDivElement = prepareContent('test');
+    const innerHTML: string = element.innerHTML;
 
-    element.innerHTML = "test";
+    expect(innerHTML).toBe('test');
+  });
 
-    expect(prepareContent("test")).toEqual(element);
+  it('function prepareContent, outerHTML:', () => {
+    const element: HTMLDivElement = prepareContent('test');
+    const outerHTML: string = element.outerHTML;
+
+    expect(outerHTML).toBe('<div>test</div>');
   });
 });
