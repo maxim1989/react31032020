@@ -4,6 +4,7 @@
   "description": "Учебный проект",
   "main": "src/index.ts",
   "scripts": {
+    "start": "webpack-dev-server --open",
     "build": "webpack",
     "test": "jest",
     "prettier": "prettier --check ./src/**/*.ts",
@@ -48,7 +49,8 @@
     "prettier": "2.0.2",
     "typescript": "^3.8.3",
     "webpack": "^4.42.1",
-    "webpack-cli": "^3.3.11"
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
   },
   "jest": {
     "transform": {
