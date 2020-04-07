@@ -1,6 +1,7 @@
-const path = require('path');
+import path from 'path';
+import webpack from 'webpack';
 
-module.exports = {
+const config: webpack.Configuration = {
   mode: 'development',
   entry: './src/index.ts',
   output: {
@@ -20,3 +21,5 @@ module.exports = {
     ],
   },
 };
+
+export default config;
