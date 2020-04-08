@@ -23,6 +23,39 @@ export function strToNumber(arr: ArrayOfStrings): ArrayOfStringsNumbers {
     });
 }
 
+export function factorial(num: number) {
+    let rval: string = '1';
+
+    for (let i: number = 2; i <= num; i++) {
+        rval = rval  + ' * ' + i;
+    }
+
+    return rval;
+}
+
+interface FactorialObject {
+    match: string;
+    converted: string;
+}
+
+export function formatFactorialToMul(str: string): string {
+    let result: string = str;
+    const step: FactorialObject[] = str.match(/! [0-9]+/g).map(match => ({
+        match,
+        converted: '' + factorial(parseInt(match.replace('! ', '')))
+    }));
+
+    step.forEach((item: FactorialObject): void => {
+        result = result.replace(item.match, item.converted);
+    });
+
+    return result;
+}
+
+export function formatSquardToDegree(str: string): string {
+    return str.replace(/[*]{2}/g, '^ 2');
+}
+
 export function calcStep<T>(arr: ArrayOfStringsNumbers, priority: Priority): Array<T> {
     const tmp = [];
     const copiedArr: ArrayOfStringsNumbers = [...arr];
@@ -44,16 +77,25 @@ export function calcStep<T>(arr: ArrayOfStringsNumbers, priority: Priority): Arr
 }
 
 export function calc(arr: ArrayOfStringsNumbers): number {
-    const step_1: ArrayOfStringsNumbers = calcStep(arr, 2);
-    const step_2: Array<number> = calcStep(step_1, 1);
+    const step_1: ArrayOfStringsNumbers = calcStep(arr, 3);
+    const step_2: Array<number> = calcStep(step_1, 2);
+    const step_3: Array<number> = calcStep(step_2, 1);
 
-    return step_2[0];
+    return step_3[0];
 }
 
-export function parse(str: string): number {
-    const splittedString: ArrayOfStrings = splitBySpace(str);
-    const formattedString: ArrayOfStringsNumbers = strToNumber(splittedString);
-    const result: number = calc(formattedString);
+export function main(str: string): number {
+    const factorialToMul = formatFactorialToMul(str);
+    const squardToDegree = formatSquardToDegree(factorialToMul);
+    const splittedString: ArrayOfStrings = splitBySpace(squardToDegree);
+    const stringToNumber: ArrayOfStringsNumbers = strToNumber(splittedString);
+    const result: number = calc(stringToNumber);
     
     return result;
 }
+
+// TODO запятую менять на точку
+// TODO проверять на допустимые значения - 0123456789.!^*()-+/
+// TODO строка не должна начинаться на **, *, /, ^, .
+// TODO строка не должна заканчиваться на !, *, /, ^, +, -, .
+// TODO после ! должно быть целое число N > 0

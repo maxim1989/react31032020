@@ -2,10 +2,11 @@ import {
     sum,
     sub,
     mul,
-    div
+    div,
+    deg
 } from './simpleOperations';
 
-export type Priority = 1 | 2
+export type Priority = 1 | 2 | 3
 
 interface SimpleOperationInfo {
     priority: Priority;
@@ -29,4 +30,8 @@ export const simpleOperation: {[key: string]: SimpleOperationInfo} = {
         priority: 2,
         action: div
     },
+    '^': {
+        priority: 3,
+        action: deg
+    }
 };

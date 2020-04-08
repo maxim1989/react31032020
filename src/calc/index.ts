@@ -1,6 +1,6 @@
 import { createInterface } from 'readline';
 
-import { parse } from './parser';
+import { main } from './parser';
 
 const rl = createInterface({
   input: process.stdin,
@@ -10,7 +10,7 @@ const rl = createInterface({
 const question = (): Promise<null> =>
   new Promise((resolve) => {
     rl.question('> ', (answer: string) => {
-      const result = parse(answer);
+      const result = main(answer);
 
       if (result || result === 0) {
         console.log(`Result: ${result}`);

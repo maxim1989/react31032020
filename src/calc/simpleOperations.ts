@@ -39,3 +39,9 @@ export function div(data: Numbers): number | never {
 
     return result;
 };
+
+export function deg(data: Numbers): number {
+    const { firstNumber, secondNumber } = data;
+
+    return firstNumber ** secondNumber;
+}

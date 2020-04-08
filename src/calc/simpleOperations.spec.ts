@@ -2,7 +2,8 @@ import {
     sum,
     sub,
     mul,
-    div
+    div,
+    deg
 } from './simpleOperations';
 
 describe('Тесты операций + - * /:', () => {
@@ -30,5 +31,13 @@ describe('Тесты операций + - * /:', () => {
         expect(div({firstNumber: 2, secondNumber: 2})).toBe(1);
         expect(div({firstNumber: 2, secondNumber: 1})).toBe(2);
         expect(() => div({firstNumber: 2, secondNumber: 0})).toThrowError(Error);
+    });
+
+    it('^:', () => {
+        expect(deg({firstNumber: 1, secondNumber: 2})).toBe(1);
+        expect(deg({firstNumber: 2, secondNumber: 2})).toBe(4);
+        expect(deg({firstNumber: 2, secondNumber: 1})).toBe(2);
+        expect(deg({firstNumber: 2, secondNumber: -1})).toBe(0.5);
+        expect(deg({firstNumber: 2, secondNumber: 0})).toBe(1);
     });
 });
