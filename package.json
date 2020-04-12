@@ -4,20 +4,15 @@
   "description": "Учебный проект",
   "main": "src/index.ts",
   "scripts": {
-    "start": "cross-env TS_NODE_PROJECT=\"tsconfig-for-webpack-config.json\" webpack-dev-server --open",
-    "build": "cross-env TS_NODE_PROJECT=\"tsconfig-for-webpack-config.json\" webpack",
+    "start": "cross-env TS_NODE_PROJECT=\"tsconfig-for-webpack-config.json\" webpack-dev-server --mode development --open",
+    "build": "cross-env TS_NODE_PROJECT=\"tsconfig-for-webpack-config.json\" webpack --mode production",
     "test": "jest",
     "prettier": "prettier --check ./src/**/*.ts",
     "prettier-fix": "prettier --write .",
     "eslint": "npx eslint ./src/**/*.ts",
-    "eslint-fix": "npx eslint --fix ./src/**/*.ts"
-  },
-  "babel": {
-    "presets": [
-      "@babel/preset-env",
-      "@babel/preset-typescript"
-    ],
-    "plugins": []
+    "eslint-fix": "npx eslint --fix ./src/**/*.ts",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "repository": {
     "type": "git",
@@ -28,7 +23,8 @@
     "reactjs",
     "redux",
     "webpack",
-    "babel"
+    "babel",
+    "storybook"
   ],
   "author": "Fedorov Maksim",
   "license": "ISC",
@@ -39,9 +35,16 @@
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.9.0",
+    "@babel/preset-react": "^7.9.4",
     "@babel/preset-typescript": "^7.9.0",
+    "@storybook/addon-actions": "^5.3.18",
+    "@storybook/addon-links": "^5.3.18",
+    "@storybook/addons": "^5.3.18",
+    "@storybook/react": "^5.3.18",
     "@types/jest": "^25.2.1",
     "@types/node": "^13.11.0",
+    "@types/react": "^16.9.34",
+    "@types/react-dom": "^16.9.6",
     "@types/webpack": "^4.41.10",
     "@types/webpack-dev-server": "^3.10.1",
     "@typescript-eslint/eslint-plugin": "^2.26.0",
@@ -51,6 +54,7 @@
     "cross-env": "^7.0.2",
     "eslint": "^6.8.0",
     "eslint-plugin-react": "^7.19.0",
+    "html-webpack-plugin": "^4.2.0",
     "jest": "^25.2.7",
     "prettier": "2.0.2",
     "ts-node": "^8.8.2",
@@ -63,5 +67,9 @@
     "transform": {
       "^.+\\.ts?$": "babel-jest"
     }
+  },
+  "dependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
   }
 }
