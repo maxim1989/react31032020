@@ -12,7 +12,10 @@
     "eslint": "npx eslint ./src/**/*.ts",
     "eslint-fix": "npx eslint --fix ./src/**/*.ts",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "loki-update": "npx loki update",
+    "loki-test": "npx loki test",
+    "loki-approve": "npx loki approve"
   },
   "repository": {
     "type": "git",
@@ -60,6 +63,7 @@
     "eslint-plugin-react": "^7.19.0",
     "html-webpack-plugin": "^4.2.0",
     "jest": "^25.2.7",
+    "loki": "^0.20.3",
     "prettier": "2.0.2",
     "ts-node": "^8.8.2",
     "typescript": "^3.8.3",
@@ -78,5 +82,20 @@
   "dependencies": {
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
+  },
+  "loki": {
+    "configurations": {
+      "chrome.laptop": {
+        "target": "chrome.app",
+        "width": 1366,
+        "height": 768,
+        "deviceScaleFactor": 1,
+        "mobile": false
+      },
+      "chrome.iphone7": {
+        "target": "chrome.app",
+        "preset": "iPhone 7"
+      }
+    }
   }
 }
