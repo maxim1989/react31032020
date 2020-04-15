@@ -57,15 +57,15 @@ export function formatSquardToDegree(str: string): string {
     return str.replace(/[*]{2}/g, '^ 2');
 }
 
-export function calcStep<T>(arr: ArrayOfStringsNumbers, priority: Priority): Array<T> {
-    const tmp = [];
+export function calcStep(arr: ArrayOfStringsNumbers, priority: Priority): ArrayOfStringsNumbers {
+    const tmp: ArrayOfStringsNumbers = [];
     const copiedArr: ArrayOfStringsNumbers = [...arr];
 
-    copiedArr.forEach((item, idx) => {
+    copiedArr.forEach((item: string | number, idx) => {
         const currentPriority: number = simpleOperation[item] ? simpleOperation[item].priority : 0;
 
         if (currentPriority === priority) {
-            const lastItem: number = tmp.pop();
+            const lastItem: number | string = tmp.pop();
             const action: Function = simpleOperation[item].action; 
 
             copiedArr[idx + 1] = action({firstNumber: lastItem, secondNumber: copiedArr[idx + 1]});
@@ -77,15 +77,15 @@ export function calcStep<T>(arr: ArrayOfStringsNumbers, priority: Priority): Arr
     return tmp;
 }
 
-export function calc(arr: ArrayOfStringsNumbers): number {
+export function calc(arr: ArrayOfStringsNumbers): number | string {
     const step_1: ArrayOfStringsNumbers = calcStep(arr, 3);
-    const step_2: Array<number> = calcStep(step_1, 2);
-    const step_3: Array<number> = calcStep(step_2, 1);
+    const step_2: ArrayOfStringsNumbers = calcStep(step_1, 2);
+    const step_3: ArrayOfStringsNumbers = calcStep(step_2, 1);
 
     return step_3[0];
 }
 
-export function parser(str: string): number {
+export function parser(str: string): number | string {
     str = str.trim();
 
     let firstIndex: number = str.indexOf('(');
@@ -119,7 +119,7 @@ export function parser(str: string): number {
     const squardToDegree = formatSquardToDegree(factorialToMul);
     const splittedString: ArrayOfStrings = splitBySpace(squardToDegree);
     const stringToNumber: ArrayOfStringsNumbers = strToNumber(splittedString);
-    const result: number = calc(stringToNumber);
+    const result: number | string = calc(stringToNumber);
     
     return result;
 }
@@ -205,7 +205,7 @@ export function formatter(str: string): string {
     return str;
 }
 
-export function main(str: string): number {
+export function main(str: string): number | string {
     validator(str);
     
     return parser(formatter(str));
