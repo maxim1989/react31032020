@@ -21,5 +21,6 @@ module.exports = {
     semi: ["error", "always"],
     quotes: ["error", "single"],
     eqeqeq: ["error", "always"],
+    "react/prop-types": 0
   },
 };

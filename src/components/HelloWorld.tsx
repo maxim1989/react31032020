@@ -1,17 +1,13 @@
-import React from 'react';
+import React, { FC } from 'react';
 
-export interface HelloWorldProps {
+export type HelloWorldProps = {
   name: string;
 }
 
-export class HelloWorld extends React.Component<HelloWorldProps, {}> {
-  render() {
-    return (
-      <h1>
-        {`Hello world, ${this.props.name} !`}
-      </h1>
-    );
-  }
-}
+export const HelloWorld: FC<HelloWorldProps> = ({ name }) => (
+  <h1>
+    {`Hello world, ${name} !`}
+  </h1>
+);
 
 export default HelloWorld;
