@@ -4,21 +4,19 @@
   "description": "Учебный проект",
   "main": "src/index.ts",
   "scripts": {
-    "start": "cross-env TS_NODE_PROJECT=\"tsconfig-for-webpack-config.json\" webpack-dev-server --open",
-    "build": "cross-env TS_NODE_PROJECT=\"tsconfig-for-webpack-config.json\" webpack",
+    "start": "cross-env TS_NODE_PROJECT=\"tsconfig-for-webpack-config.json\" webpack-dev-server --mode development --open",
+    "build": "cross-env TS_NODE_PROJECT=\"tsconfig-for-webpack-config.json\" webpack --mode production",
     "test": "jest",
     "prettier": "prettier --check ./src/**/*.ts",
     "prettier-fix": "prettier --write .",
     "eslint": "npx eslint ./src/**/*.ts",
     "eslint-fix": "npx eslint --fix ./src/**/*.ts",
     "calc": "npx ts-node src/calc/index.ts"
-  },
-  "babel": {
-    "presets": [
-      "@babel/preset-env",
-      "@babel/preset-typescript"
-    ],
-    "plugins": []
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook",
+    "loki-update": "npx loki update",
+    "loki-test": "npx loki test",
+    "loki-approve": "npx loki approve"
   },
   "repository": {
     "type": "git",
@@ -29,7 +27,8 @@
     "reactjs",
     "redux",
     "webpack",
-    "babel"
+    "babel",
+    "storybook"
   ],
   "author": "Fedorov Maksim",
   "license": "ISC",
@@ -40,9 +39,21 @@
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.9.0",
+    "@babel/preset-react": "^7.9.4",
     "@babel/preset-typescript": "^7.9.0",
+    "@storybook/addon-actions": "^5.3.18",
+    "@storybook/addon-knobs": "^5.3.18",
+    "@storybook/addon-links": "^5.3.18",
+    "@storybook/addon-notes": "^5.3.18",
+    "@storybook/addon-storysource": "^5.3.18",
+    "@storybook/addons": "^5.3.18",
+    "@storybook/react": "^5.3.18",
+    "@types/enzyme": "^3.10.5",
+    "@types/enzyme-adapter-react-16": "^1.0.6",
     "@types/jest": "^25.2.1",
     "@types/node": "^13.11.0",
+    "@types/react": "^16.9.34",
+    "@types/react-dom": "^16.9.6",
     "@types/webpack": "^4.41.10",
     "@types/webpack-dev-server": "^3.10.1",
     "@typescript-eslint/eslint-plugin": "^2.26.0",
@@ -50,9 +61,13 @@
     "babel-jest": "^25.2.6",
     "babel-loader": "^8.1.0",
     "cross-env": "^7.0.2",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
     "eslint": "^6.8.0",
     "eslint-plugin-react": "^7.19.0",
+    "html-webpack-plugin": "^4.2.0",
     "jest": "^25.2.7",
+    "loki": "^0.20.3",
     "prettier": "2.0.2",
     "ts-node": "^8.8.2",
     "typescript": "^3.8.3",
@@ -61,8 +76,30 @@
     "webpack-dev-server": "^3.10.3"
   },
   "jest": {
+    "setupFilesAfterEnv": [
+      "<rootDir>setupTests.ts"
+    ],
     "transform": {
-      "^.+\\.ts?$": "babel-jest"
+      "^.+\\.ts(x?)?$": "babel-jest"
+    }
+  },
+  "dependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "loki": {
+    "configurations": {
+      "chrome.laptop": {
+        "target": "chrome.app",
+        "width": 1366,
+        "height": 768,
+        "deviceScaleFactor": 1,
+        "mobile": false
+      },
+      "chrome.iphone7": {
+        "target": "chrome.app",
+        "preset": "iPhone 7"
+      }
     }
   },
   "dependencies": {
