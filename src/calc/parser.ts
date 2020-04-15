@@ -40,6 +40,7 @@ interface FactorialObject {
 
 export function formatFactorialToMul(str: string): string {
     let result = str;
+  
     const match: ArrayOfStrings = str.match(/! [0-9]+/g);
     const step: FactorialObject[] = match ? match.map(match => ({
         match,
