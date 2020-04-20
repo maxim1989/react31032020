@@ -1,7 +1,7 @@
 import {
     splitBySpace,
     strToNumber,
-    calc,
+    calcPriority,
     isNumber,
     calcStep,
     formatSquardToDegree,
@@ -61,29 +61,29 @@ describe('Тестирование парсера:', () => {
         });
     });
 
-    describe('calc:', () => {
+    describe('calcPriority:', () => {
         it('[1, \'+\', 22]', () => {
-            expect(calc([1, '+', 22])).toBe(23);
+            expect(calcPriority([1, '+', 22])).toBe(23);
         });
 
         it('[1, \'+\', 22, \'/\', 2]', () => {
-            expect(calc([1, '+', 22, '/', 2])).toBe(12);
+            expect(calcPriority([1, '+', 22, '/', 2])).toBe(12);
         });
 
         it('[1, \'*\', 2, \'+\', 22, \'/\', 2]', () => {
-            expect(calc([1, '*', 2, '+', 22, '/', 2])).toBe(13);
+            expect(calcPriority([1, '*', 2, '+', 22, '/', 2])).toBe(13);
         });
 
         it('[-1, "*", 1, "*", 2, "+", 22, "/", 2]', () => {
-            expect(calc([-1, '*', 1, '*', 2, '+', 22, '/', 2])).toBe(9);
+            expect(calcPriority([-1, '*', 1, '*', 2, '+', 22, '/', 2])).toBe(9);
         });
 
         it('[-1, "*", 1, "*", -2, "+", 22, "/", 2]', () => {
-            expect(calc([-1, '*', 1, '*', -2, '+', 22, '/', 2])).toBe(13);
+            expect(calcPriority([-1, '*', 1, '*', -2, '+', 22, '/', 2])).toBe(13);
         });
 
         it('[1, "-", 1]', () => {
-            expect(calc([1, '-', 1])).toBe(0);
+            expect(calcPriority([1, '-', 1])).toBe(0);
         });
     });
 
