@@ -4,16 +4,16 @@ import { shallow } from 'enzyme';
 import { Game, GameState, GameProps } from './Game';
 
 class Instance extends React.Component<GameProps, GameState> {
-    fillState() {
+    createData() {
         return 'some string';
     }
 }
 
 describe('Тестирование модуля Game.tsx:', () => {
-    it('fillState:', () => {
+    it('createData:', () => {
         const wrapper = shallow<Instance>(<Game />);
         const instance = wrapper.instance();
-        const result = instance.fillState();
+        const result = instance.createData();
 
         expect(result).toEqual([                                
             { position: 0, content: null },

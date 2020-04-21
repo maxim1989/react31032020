@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { Item, contentStyleGenerator } from './Item';
+import { Item, contentStyleDict } from './Item';
 
 describe('Тестирование модуля Item.tsx:', () => {
     describe('Компонент Item:', () => {
@@ -12,27 +12,27 @@ describe('Тестирование модуля Item.tsx:', () => {
             wrapper.simulate('click');
 
             expect(mockHandleClick).toHaveBeenCalledTimes(1);
-            expect(wrapper.html()).toBe('<div data-position="1" class="css-i951ke-wrapperStyle"><span class="css-8apl5r-Item"></span></div>');
+            expect(wrapper.html()).toBe('<div data-position="1" class="css-i951ke-wrapperStyle"><span class="css-am7yxk-circleStyle"></span></div>');
         });
     });
 
-    describe('contentStyleGenerator:', () => {
+    describe('contentStyleDict:', () => {
         it('key=1:', () => {
-            const result = contentStyleGenerator(1);
+            const result = contentStyleDict[1];
 
-            expect(result.styles).toBe('border-radius:55px;height:100px;width:100px;border:4px solid black;');
+            expect(result.styles).toBe('border-radius:55px;height:100px;width:100px;border:4px solid black;;label:circleStyle;');
         });
 
         it('key=2:', () => {
-            const result = contentStyleGenerator(2);
+            const result = contentStyleDict[2];
 
-            expect(result.styles).toBe('display:block;position:relative;width:100%;height:100%;&:before{content:" ";position:absolute;height:100px;width:4px;transform:rotate(45deg);background-color:black;top:10%;left:50%;}&:after{content:" ";position:absolute;height:100px;width:4px;transform:rotate(-45deg);background-color:black;top:10%;left:50%;}');
+            expect(result.styles).toBe('display:block;position:relative;width:100%;height:100%;&:before{content:" ";position:absolute;height:100px;width:4px;transform:rotate(45deg);background-color:black;top:10%;left:50%;}&:after{content:" ";position:absolute;height:100px;width:4px;transform:rotate(-45deg);background-color:black;top:10%;left:50%;};label:crossStyle;');
         });
 
         it('key=any:', () => {
-            const result = contentStyleGenerator(5);
+            const result = contentStyleDict[5];
 
-            expect(result.styles).toBe('');
+            expect(result).toBe(undefined);
         });
     });
 });

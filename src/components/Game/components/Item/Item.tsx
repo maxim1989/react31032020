@@ -21,48 +21,43 @@ const wrapperStyle = css({
     }
 });
 
-export const contentStyleGenerator: (key: number) => SerializedStyles = (key) => {
-    switch(key) {
-        case ContentEnum.Circle: {
-            return css({
-                borderRadius: '55px',
-                height: '100px',
-                width: '100px',
-                border: '4px solid black'
-            });
-        }
-        case ContentEnum.Cross: {
-            return css({
-                display: 'block',
-                position: 'relative',
-                width: '100%',
-                height: '100%',
-                '&:before': {
-                    content: '" "',
-                    position: 'absolute',
-                    height: '100px',
-                    width: '4px',
-                    transform: 'rotate(45deg)',
-                    backgroundColor: 'black',
-                    top: '10%',
-                    left: '50%'
-                },
-                '&:after': {
-                    content: '" "',
-                    position: 'absolute',
-                    height: '100px',
-                    width: '4px',
-                    transform: 'rotate(-45deg)',
-                    backgroundColor: 'black',
-                    top: '10%',
-                    left: '50%'
-                }
-            });
-        }
-        default: {
-            return css({});
-        }
+const circleStyle = css({
+    borderRadius: '55px',
+    height: '100px',
+    width: '100px',
+    border: '4px solid black'
+});
+
+const crossStyle = css({
+    display: 'block',
+    position: 'relative',
+    width: '100%',
+    height: '100%',
+    '&:before': {
+        content: '" "',
+        position: 'absolute',
+        height: '100px',
+        width: '4px',
+        transform: 'rotate(45deg)',
+        backgroundColor: 'black',
+        top: '10%',
+        left: '50%'
+    },
+    '&:after': {
+        content: '" "',
+        position: 'absolute',
+        height: '100px',
+        width: '4px',
+        transform: 'rotate(-45deg)',
+        backgroundColor: 'black',
+        top: '10%',
+        left: '50%'
     }
+});
+
+export const contentStyleDict: {[key: number]: SerializedStyles} = {
+    [ContentEnum.Circle]: circleStyle,       
+    [ContentEnum.Cross]: crossStyle
 };
 
 type content = ContentEnum.Circle | ContentEnum.Cross | null;
@@ -86,6 +81,6 @@ export const Item: React.FC<ItemProps> = ({
        data-position={position}
        css={wrapperStyle}
   >
-      <span css={contentStyleGenerator(content)}/>
+      {contentStyleDict[content] && <span css={contentStyleDict[content]}/>}
   </div>
 );

@@ -28,12 +28,12 @@ export class Game extends React.PureComponent<GameProps, GameState> {
     constructor(props: GameProps) {
         super(props);
         this.state = {
-            data: this.fillState(),
-            step: 1
+            data: this.createData(),
+            step: 0
         };
     }
 
-    fillState: () => ItemInterface[] = () => {
+    createData: () => ItemInterface[] = () => {
         const state: ItemInterface[] = [];
 
         for (let i: number = 0; i < 9; i++) {
@@ -49,22 +49,28 @@ export class Game extends React.PureComponent<GameProps, GameState> {
     onItemClick: TypeHandleClick = (event) => {
         const currentPosition: number = _.toInteger(event.currentTarget.getAttribute('data-position'));
         const { data, step } = this.state;
+        let nextStep = step;
+        const newData = data.map((item) => {
+            const {content, position} = item;
 
-        this.setState({
-            data: data.map((item) => {
-                const {content, position} = item;
+            if (position === currentPosition && !content) {
+                nextStep++;
 
-                if (position === currentPosition && !content) {
-                    this.setState({step: step + 1});
+                return {
+                    ...item,
+                    content: step % 2 ? ContentEnum.Cross : ContentEnum.Circle
+                };
+            }
 
-                    return step % 2 === 0 ?
-                        {...item, content: ContentEnum.Circle} :
-                        {...item, content: ContentEnum.Cross};
-                }
-
-                return item;
-            })
+            return item;
         });
+
+        if (nextStep !== step) {
+            this.setState({
+                data: newData,
+                step: nextStep
+            });
+        }
     }  
 
     render() {
