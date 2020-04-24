@@ -1,6 +1,6 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-import HelloWorld from './components/HelloWorld';
+import { Game } from './components/Game';
 
-ReactDOM.render(<HelloWorld name="John Smith" />, document.getElementById('root'));
+ReactDOM.render(<Game />, document.getElementById('root'));
