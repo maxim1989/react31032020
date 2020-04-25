@@ -2,8 +2,25 @@ import { generateRandomColor } from '@shared/utils';
 
 describe('Тестирование модуля utils.ts:', () => {
     it('generateRandomColor:', () => {
-        const result = generateRandomColor();
-        
-        expect(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(result)).toBe(true);
+        expect(/^((0x){0,1}|#{0,1})([0-9A-F]{8}|[0-9A-F]{6})$/i.test(generateRandomColor())).toBe(true);
+        expect(/^((0x){0,1}|#{0,1})([0-9A-F]{8}|[0-9A-F]{6})$/i.test(generateRandomColor())).toBe(true);
+        expect(/^((0x){0,1}|#{0,1})([0-9A-F]{8}|[0-9A-F]{6})$/i.test(generateRandomColor())).toBe(true);
+        expect(/^((0x){0,1}|#{0,1})([0-9A-F]{8}|[0-9A-F]{6})$/i.test(generateRandomColor())).toBe(true);
+        expect(/^((0x){0,1}|#{0,1})([0-9A-F]{8}|[0-9A-F]{6})$/i.test(generateRandomColor())).toBe(true);
+        expect(/^((0x){0,1}|#{0,1})([0-9A-F]{8}|[0-9A-F]{6})$/i.test(generateRandomColor())).toBe(true);
+        expect(/^((0x){0,1}|#{0,1})([0-9A-F]{8}|[0-9A-F]{6})$/i.test(generateRandomColor())).toBe(true);
+        expect(/^((0x){0,1}|#{0,1})([0-9A-F]{8}|[0-9A-F]{6})$/i.test(generateRandomColor())).toBe(true);
+        expect(/^((0x){0,1}|#{0,1})([0-9A-F]{8}|[0-9A-F]{6})$/i.test(generateRandomColor())).toBe(true);
+        expect(/^((0x){0,1}|#{0,1})([0-9A-F]{8}|[0-9A-F]{6})$/i.test(generateRandomColor())).toBe(true);
+        expect(/^((0x){0,1}|#{0,1})([0-9A-F]{8}|[0-9A-F]{6})$/i.test(generateRandomColor())).toBe(true);
+        expect(/^((0x){0,1}|#{0,1})([0-9A-F]{8}|[0-9A-F]{6})$/i.test(generateRandomColor())).toBe(true);
+        expect(/^((0x){0,1}|#{0,1})([0-9A-F]{8}|[0-9A-F]{6})$/i.test(generateRandomColor())).toBe(true);
+        expect(/^((0x){0,1}|#{0,1})([0-9A-F]{8}|[0-9A-F]{6})$/i.test(generateRandomColor())).toBe(true);
+        expect(/^((0x){0,1}|#{0,1})([0-9A-F]{8}|[0-9A-F]{6})$/i.test(generateRandomColor())).toBe(true);
+        expect(/^((0x){0,1}|#{0,1})([0-9A-F]{8}|[0-9A-F]{6})$/i.test(generateRandomColor())).toBe(true);
+        expect(/^((0x){0,1}|#{0,1})([0-9A-F]{8}|[0-9A-F]{6})$/i.test(generateRandomColor())).toBe(true);
+        expect(/^((0x){0,1}|#{0,1})([0-9A-F]{8}|[0-9A-F]{6})$/i.test(generateRandomColor())).toBe(true);
+        expect(/^((0x){0,1}|#{0,1})([0-9A-F]{8}|[0-9A-F]{6})$/i.test(generateRandomColor())).toBe(true);
+        expect(/^((0x){0,1}|#{0,1})([0-9A-F]{8}|[0-9A-F]{6})$/i.test(generateRandomColor())).toBe(true);
     });
 });

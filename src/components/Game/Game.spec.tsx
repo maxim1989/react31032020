@@ -5,7 +5,11 @@ import { Game, GameState, GameProps } from './Game';
 
 class Instance extends React.Component<GameProps, GameState> {
     createData() {
-        return 'some string';
+        return 'createData';
+    }
+
+    randomInteger(min: number, max: number) {
+        return 'randomInteger';
     }
 }
 
@@ -26,5 +30,23 @@ describe('Тестирование модуля Game.tsx:', () => {
             { position: 7, content: null, x: 0, y: 0 },
             { position: 8, content: null, x: 0, y: 0 } 
         ]);
+    });
+
+    it('randomInteger:', () => {
+        const wrapper = shallow<Instance>(<Game />);
+        const instance = wrapper.instance()
+
+        expect(instance.randomInteger(1, 10)).toBeGreaterThan(0);
+        expect(instance.randomInteger(1, 10)).toBeLessThan(11);
+        expect(instance.randomInteger(1, 10)).toBeGreaterThan(0);
+        expect(instance.randomInteger(1, 10)).toBeLessThan(11);
+        expect(instance.randomInteger(1, 10)).toBeGreaterThan(0);
+        expect(instance.randomInteger(1, 10)).toBeLessThan(11);
+        expect(instance.randomInteger(1, 10)).toBeGreaterThan(0);
+        expect(instance.randomInteger(1, 10)).toBeLessThan(11);
+        expect(instance.randomInteger(1, 10)).toBeGreaterThan(0);
+        expect(instance.randomInteger(1, 10)).toBeLessThan(11);
+        expect(instance.randomInteger(1, 10)).toBeGreaterThan(0);
+        expect(instance.randomInteger(1, 10)).toBeLessThan(11);
     });
 });
