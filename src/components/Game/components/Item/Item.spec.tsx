@@ -12,7 +12,7 @@ describe('Тестирование модуля Item.tsx:', () => {
             wrapper.simulate('click');
 
             expect(mockHandleClick).toHaveBeenCalledTimes(1);
-            expect(wrapper.html()).toBe('<div data-position="1" class="css-i951ke-wrapperStyle"><span class="css-am7yxk-circleStyle"></span></div>');
+            expect(wrapper.html()).toBe('<div data-position="1" class="css-1in9esn-wrapperStyle"><span class="css-am7yxk-circleStyle"></span></div>');
         });
     });
 

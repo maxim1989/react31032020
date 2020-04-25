@@ -16,15 +16,15 @@ describe('Тестирование модуля Game.tsx:', () => {
         const result = instance.createData();
 
         expect(result).toEqual([                                
-            { position: 0, content: null },
-            { position: 1, content: null },
-            { position: 2, content: null },
-            { position: 3, content: null },
-            { position: 4, content: null },
-            { position: 5, content: null },
-            { position: 6, content: null },
-            { position: 7, content: null },
-            { position: 8, content: null } 
+            { position: 0, content: null, x: 0, y: 0 },
+            { position: 1, content: null, x: 0, y: 0 },
+            { position: 2, content: null, x: 0, y: 0 },
+            { position: 3, content: null, x: 0, y: 0 },
+            { position: 4, content: null, x: 0, y: 0 },
+            { position: 5, content: null, x: 0, y: 0 },
+            { position: 6, content: null, x: 0, y: 0 },
+            { position: 7, content: null, x: 0, y: 0 },
+            { position: 8, content: null, x: 0, y: 0 } 
         ]);
     });
 });

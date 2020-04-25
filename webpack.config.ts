@@ -1,6 +1,7 @@
 import path from 'path';
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 const config: webpack.Configuration = {
   mode: 'development',
@@ -13,7 +14,10 @@ const config: webpack.Configuration = {
     contentBase: './dist',
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx']
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
+    alias: {
+      '@shared': path.resolve(__dirname, 'src/shared')
+    }
   },
   module: {
     rules: [
@@ -28,6 +32,9 @@ const config: webpack.Configuration = {
     new HtmlWebpackPlugin({
       template: './template.html',
     }),
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static'
+    })
   ]
 };
 

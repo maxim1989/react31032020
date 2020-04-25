@@ -34,16 +34,24 @@ export class Game extends React.PureComponent<GameProps, GameState> {
     }
 
     createData: () => ItemInterface[] = () => {
-        const state: ItemInterface[] = [];
+        const data: ItemInterface[] = [];
 
         for (let i: number = 0; i < 9; i++) {
-            state.push({
+            data.push({
                 position: i,
-                content: null
+                content: null,
+                x: 0,
+                y: 0
             });
         }
 
-        return state;
+        return data;
+    }
+
+    randomInteger: (min: number, max: number) => number = (min, max) => {
+        const rand = min - 0.5 + Math.random() * (max - min + 1);
+
+        return Math.round(rand);
     }
 
     onItemClick: TypeHandleClick = (event) => {
@@ -58,11 +66,11 @@ export class Game extends React.PureComponent<GameProps, GameState> {
 
                 return {
                     ...item,
-                    content: step % 2 ? ContentEnum.Cross : ContentEnum.Circle
+                    content: step % 2 ? ContentEnum.Circle : ContentEnum.Cross
                 };
             }
 
-            return item;
+            return { ...item, x: this.randomInteger(10, 100), y: this.randomInteger(10, 100)};
         });
 
         if (nextStep !== step) {
@@ -78,9 +86,11 @@ export class Game extends React.PureComponent<GameProps, GameState> {
 
         return (
             <div css={style}>
-                {data.map(({ content, position }) =>
+                {data.map(({ content, position, x, y }) =>
                     <Item key={position}
                           content={content}
+                          x={x}
+                          y={y}
                           position={position}
                           handleClick={this.onItemClick}/>)}
             </div>
