@@ -11,6 +11,7 @@ const config: webpack.Configuration = {
   },
   devServer: {
     contentBase: './dist',
+    historyApiFallback: true,
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
