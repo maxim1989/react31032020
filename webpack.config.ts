@@ -1,7 +1,6 @@
 import path from 'path';
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 const config: webpack.Configuration = {
   mode: 'development',
@@ -31,9 +30,6 @@ const config: webpack.Configuration = {
   plugins: [
     new HtmlWebpackPlugin({
       template: './template.html',
-    }),
-    new BundleAnalyzerPlugin({
-      analyzerMode: 'static'
     })
   ]
 };

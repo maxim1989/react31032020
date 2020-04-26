@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { css, SerializedStyles } from '@emotion/core';
 import { generateRandomColor } from '@shared/utils';
-
-export enum ContentEnum {
-    Circle=1,
-    Cross
-}
+import { ContentEnum } from '@shared/enums';
 
 const wrapperStyle = css({
     display: 'flex',

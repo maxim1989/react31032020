@@ -3,33 +3,34 @@ import { css } from '@emotion/core';
 import _ from 'lodash';
 
 import {
-    ContentEnum,
     Item,
     ItemInterface,
     TypeHandleClick
 } from './components/Item';
-
-const style = css`
-    width: 360px;
-    display: flex;
-    flex-wrap: wrap;
-`;
+import {
+    Info
+} from './components/Info';
+import { generateRandomColor } from '@shared/utils';
+import { ContentEnum } from '@shared/enums';
 
 export interface GameProps {}
 
 export interface GameState {
     data: ItemInterface[];
     step: number;
+    border: string;
 }
 
 export class Game extends React.PureComponent<GameProps, GameState> {
     state: GameState
+    border: any
 
     constructor(props: GameProps) {
         super(props);
         this.state = {
             data: this.createData(),
-            step: 0
+            step: 0,
+            border: '#fff'
         };
     }
 
@@ -82,18 +83,43 @@ export class Game extends React.PureComponent<GameProps, GameState> {
     }  
 
     render() {
-        const { data } = this.state;
+        const { data, border } = this.state;
 
         return (
-            <div css={style}>
-                {data.map(({ content, position, x, y }) =>
-                    <Item key={position}
-                          content={content}
-                          x={x}
-                          y={y}
-                          position={position}
-                          handleClick={this.onItemClick}/>)}
-            </div>
+            <>
+                <div css={css({
+                    width: '360px',
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    border: `10px solid ${border}`
+                })}>
+                    {data.map(({ content, position, x, y }) =>
+                        <Item key={position}
+                            content={content}
+                            x={x}
+                            y={y}
+                            position={position}
+                            handleClick={this.onItemClick}/>)}
+                </div>
+                {data.map(({ content, position }) => 
+                    <Info key={position}
+                        position={position}
+                        content={content}
+                    />
+                )}
+            </>
         );
+    }
+
+    componentDidMount() {
+        this.border = setInterval(() => {
+            this.setState({
+                border: generateRandomColor()
+            });
+        }, 2000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.border);
     }
 }

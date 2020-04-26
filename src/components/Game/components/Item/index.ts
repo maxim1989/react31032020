@@ -1,1 +1,1 @@
-export { Item, ItemInterface, TypeHandleClick, ContentEnum } from './Item';
+export { Item, ItemInterface, TypeHandleClick } from './Item';
