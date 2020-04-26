@@ -11,9 +11,13 @@ const config: webpack.Configuration = {
   },
   devServer: {
     contentBase: './dist',
+    historyApiFallback: true,
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx']
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
+    alias: {
+      '@shared': path.resolve(__dirname, 'src/shared')
+    }
   },
   module: {
     rules: [
@@ -27,7 +31,7 @@ const config: webpack.Configuration = {
   plugins: [
     new HtmlWebpackPlugin({
       template: './template.html',
-    }),
+    })
   ]
 };
 

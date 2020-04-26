@@ -3,47 +3,56 @@ import { css } from '@emotion/core';
 import _ from 'lodash';
 
 import {
-    ContentEnum,
     Item,
     ItemInterface,
     TypeHandleClick
 } from './components/Item';
-
-const style = css`
-    width: 360px;
-    display: flex;
-    flex-wrap: wrap;
-`;
+import {
+    Info
+} from './components/Info';
+import { generateRandomColor } from '@shared/utils';
+import { ContentEnum } from '@shared/enums';
 
 export interface GameProps {}
 
 export interface GameState {
     data: ItemInterface[];
     step: number;
+    border: string;
 }
 
 export class Game extends React.PureComponent<GameProps, GameState> {
     state: GameState
+    border: any
 
     constructor(props: GameProps) {
         super(props);
         this.state = {
             data: this.createData(),
-            step: 0
+            step: 0,
+            border: '#fff'
         };
     }
 
     createData: () => ItemInterface[] = () => {
-        const state: ItemInterface[] = [];
+        const data: ItemInterface[] = [];
 
         for (let i: number = 0; i < 9; i++) {
-            state.push({
+            data.push({
                 position: i,
-                content: null
+                content: null,
+                x: 0,
+                y: 0
             });
         }
 
-        return state;
+        return data;
+    }
+
+    randomInteger: (min: number, max: number) => number = (min, max) => {
+        const rand = min - 0.5 + Math.random() * (max - min + 1);
+
+        return Math.round(rand);
     }
 
     onItemClick: TypeHandleClick = (event) => {
@@ -58,11 +67,11 @@ export class Game extends React.PureComponent<GameProps, GameState> {
 
                 return {
                     ...item,
-                    content: step % 2 ? ContentEnum.Cross : ContentEnum.Circle
+                    content: step % 2 ? ContentEnum.Circle : ContentEnum.Cross
                 };
             }
 
-            return item;
+            return { ...item, x: this.randomInteger(10, 100), y: this.randomInteger(10, 100)};
         });
 
         if (nextStep !== step) {
@@ -74,16 +83,43 @@ export class Game extends React.PureComponent<GameProps, GameState> {
     }  
 
     render() {
-        const { data } = this.state;
+        const { data, border } = this.state;
 
         return (
-            <div css={style}>
-                {data.map(({ content, position }) =>
-                    <Item key={position}
-                          content={content}
-                          position={position}
-                          handleClick={this.onItemClick}/>)}
-            </div>
+            <>
+                <div css={css({
+                    width: '360px',
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    border: `10px solid ${border}`
+                })}>
+                    {data.map(({ content, position, x, y }) =>
+                        <Item key={position}
+                            content={content}
+                            x={x}
+                            y={y}
+                            position={position}
+                            handleClick={this.onItemClick}/>)}
+                </div>
+                {data.map(({ content, position }) => 
+                    <Info key={position}
+                        position={position}
+                        content={content}
+                    />
+                )}
+            </>
         );
+    }
+
+    componentDidMount() {
+        this.border = setInterval(() => {
+            this.setState({
+                border: generateRandomColor()
+            });
+        }, 2000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.border);
     }
 }

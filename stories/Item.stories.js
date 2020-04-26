@@ -13,10 +13,11 @@ export default {
 export const ItemStory = () => {
   const position = number('props.position');
   const content = number('props.content');
+  const x = number('props.x');
+  const y = number('props.y');
   const handleClick = action('clicked');
 
-
-  return <Item position={position} content={content} handleClick={handleClick}/>;
+  return <Item position={position} content={content} x={x} y={y} handleClick={handleClick}/>;
 };
 
 ItemStory.story = {

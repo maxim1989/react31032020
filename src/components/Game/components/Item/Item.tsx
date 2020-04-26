@@ -1,10 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { css, SerializedStyles } from '@emotion/core';
-
-export enum ContentEnum {
-    Circle=1,
-    Cross
-}
+import { generateRandomColor } from '@shared/utils';
+import { ContentEnum } from '@shared/enums';
 
 const wrapperStyle = css({
     display: 'flex',
@@ -13,10 +10,10 @@ const wrapperStyle = css({
     width: '120px',
     height: '120px',
     cursor: 'pointer',
-    '&:nth-child(odd)': {
+    '&:nth-of-type(n)': {
         backgroundColor: '#c5dcde'
     },
-    '&:nth-child(even)': {
+    '&:nth-of-type(2n)': {
         backgroundColor: '#f2d9d5'
     }
 });
@@ -66,6 +63,8 @@ export type TypeHandleClick = (event: React.MouseEvent) => void;
 export interface ItemInterface {
     position: number;
     content: content;
+    x?: number;
+    y?: number;
 }
 
 interface ItemProps extends ItemInterface {
@@ -75,12 +74,31 @@ interface ItemProps extends ItemInterface {
 export const Item: React.FC<ItemProps> = ({
     content,
     position,
+    x=0,
+    y=0,
     handleClick
-}) => (
-  <div onClick={handleClick}
-       data-position={position}
-       css={wrapperStyle}
-  >
-      {contentStyleDict[content] && <span css={contentStyleDict[content]}/>}
-  </div>
-);
+}) => {
+    const [bgColor, setBgColor] = useState('#000');
+    const cssContent = contentStyleDict[content];
+
+    useEffect(() => {
+        setBgColor(generateRandomColor());
+    }, [x, y]);
+    
+    return (
+        <div onClick={handleClick}
+            data-position={position}
+            css={wrapperStyle}
+        >
+            {!cssContent && <div css={css({
+                height: `${y}px`,
+                width: `${x}px`,
+                backgroundColor: bgColor,
+                transitionProperty: 'width, height, background-color',
+                transitionDuration: '0.5s, 0.5s, 2s',
+                transitionTimingFunction: 'linear, linear, ease'
+                })}/>}
+            {cssContent && <span css={cssContent}/>}
+        </div>
+    );
+};

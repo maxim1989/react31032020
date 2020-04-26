@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
   stories: ['../stories/**/*.stories.[tj]s'],
   addons: [
@@ -17,6 +19,10 @@ module.exports = {
     });
 
     config.resolve.extensions.push('.ts', '.tsx', '.js', '.jsx');
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@shared': path.resolve(__dirname, '../src/shared')
+    }
 
     return config;
   },
