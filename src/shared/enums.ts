@@ -14,3 +14,10 @@ export enum StartPercentEnum {
     Medium=30,
     Big=50
 }
+
+export enum AgeEnum {
+    Small='green',
+    Medium='yellow',
+    Big='red',
+    Empty='white'
+}

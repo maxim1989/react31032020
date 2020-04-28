@@ -3,7 +3,8 @@ import _ from 'lodash';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 
-import { FieldSizeEnum, StartPercentEnum } from '@shared/enums';
+import { FieldSizeEnum, StartPercentEnum, AgeEnum } from '@shared/enums';
+import { randomInteger } from '@shared/utils';
 import { Cell, CellInterface } from './components/Cell';
 
 interface ButtonProps {
@@ -23,6 +24,7 @@ const Button = styled.button<ButtonProps>`
 
 type FieldSize = FieldSizeEnum.Small | FieldSizeEnum.Medium | FieldSizeEnum.Big;
 type StartPercent = StartPercentEnum.Small | StartPercentEnum.Medium | StartPercentEnum.Big;
+type RandomStoreType = { [key: number]: boolean };
 
 interface FormInterface {};
 
@@ -40,21 +42,48 @@ export class GameLife extends React.PureComponent<GameLifeProps, GameLifeState> 
 
         this.state = {
             form: {},
-            data: this.createData(FieldSizeEnum.Small),
+            data: this.createData(FieldSizeEnum.Small, StartPercentEnum.Medium),
             fieldSize: FieldSizeEnum.Small,
             startPercent: StartPercentEnum.Medium
         };
     }
 
-    createData = (l: FieldSize):CellInterface[] => [...new Array(l * (l - 20))].map((_, index) => ({
-        position: index
-    }))
+    generateRandomNumbers = (fieldSize:FieldSize, startPercent:StartPercent): RandomStoreType => {
+        const store: RandomStoreType = {};
+        const max = fieldSize * (fieldSize - 20) - 1;
+        const storeLength = Math.round(startPercent * max / 100);
+
+        while (Object.keys(store).length < storeLength) {
+            const num: number = randomInteger(0, max);
+
+            if (!store[num]) {
+                store[num] = true;
+            }
+        }
+
+        return store;
+    }
+
+    createData = (l: FieldSize, p: StartPercent):CellInterface[] => {
+        const dataLength: number = l * (l - 20);
+        const randomNumbers: RandomStoreType = this.generateRandomNumbers(l, p);
+        
+        return [...new Array(dataLength)].map((_, index): CellInterface => {
+            const age: string = randomNumbers[index] ? AgeEnum.Small : AgeEnum.Empty;
+
+            return {
+                position: index,
+                age 
+            };
+        });
+    }
 
     handleFieldSize = (event: React.MouseEvent<HTMLButtonElement>):void => {
         event.preventDefault();
         const fieldSize: number = _.toInteger(event.currentTarget.getAttribute('data-size'));
+        const { startPercent } = this.state;
 
-        this.setState({ fieldSize, data: this.createData(fieldSize) });
+        this.setState({ fieldSize, data: this.createData(fieldSize, startPercent) });
     }
 
     handleStartPercent = (event: React.MouseEvent<HTMLButtonElement>):void => {
@@ -120,7 +149,7 @@ export class GameLife extends React.PureComponent<GameLifeProps, GameLifeState> 
                      borderTop: '1px solid #000',
                      borderRight: '1px solid #000'
                 })}>
-                    {data.map(({ position }) => <Cell key={position} position={position}/>)}
+                    {data.map((item: CellInterface) => <Cell key={item.position} position={item.position} age={item.age}/>)}
                 </div>
             </>
         );

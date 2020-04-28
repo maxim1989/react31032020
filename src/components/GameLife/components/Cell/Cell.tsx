@@ -1,14 +1,18 @@
 import React from 'react';
 import { css } from '@emotion/core';
 
+import { AgeEnum } from '@shared/enums';
+
 export interface CellInterface {
     position: number;
+    age: AgeEnum.Small | AgeEnum.Medium | AgeEnum.Big | AgeEnum.Empty;
 }
 
 interface CellProps extends CellInterface {}
 
 export const Cell: React.FC<CellProps> = ({
-    position
+    position,
+    age
 }) => (
     <div css={css({
         width: '10px',
@@ -18,15 +22,7 @@ export const Cell: React.FC<CellProps> = ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        '&:nth-of-type(n)': {
-            backgroundColor: '#c5dcde'
-        },
-        '&:nth-of-type(2n)': {
-            backgroundColor: '#f2d9d5'
-        },
-        '&:nth-of-type(3n)': {
-            backgroundColor: 'red'
-        }
+        backgroundColor: age
     })}>
         -
     </div>
