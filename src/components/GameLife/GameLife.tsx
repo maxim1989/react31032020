@@ -3,28 +3,35 @@ import _ from 'lodash';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 
-import { FieldSizeEnum } from '@shared/enums';
+import { FieldSizeEnum, StartPercentEnum } from '@shared/enums';
 import { Cell, CellInterface } from './components/Cell';
 
 interface ButtonProps {
     selected: boolean;
-    'data-size': number;
+    'data-size'?: number;
+    'data-percent'?: number;
 }
 
 const Button = styled.button<ButtonProps>`
-  color: ${props => props.selected ? 'green' : 'red'};
+  background-color: ${props => props.selected ? 'grey' : '#fff'};
+  margin-right: 5px;
+  width: 100px;
+  &:last-child {
+      margin-right: 0;
+  }
 `;
 
 type FieldSize = FieldSizeEnum.Small | FieldSizeEnum.Medium | FieldSizeEnum.Big;
+type StartPercent = StartPercentEnum.Small | StartPercentEnum.Medium | StartPercentEnum.Big;
 
-interface FormInterface {
-    fieldSize: FieldSize;
-};
+interface FormInterface {};
 
 interface GameLifeProps {};
 interface GameLifeState {
     form: FormInterface;
     data: CellInterface[];
+    fieldSize: FieldSize;
+    startPercent: StartPercent
 };
 
 export class GameLife extends React.PureComponent<GameLifeProps, GameLifeState> {
@@ -32,10 +39,10 @@ export class GameLife extends React.PureComponent<GameLifeProps, GameLifeState> 
         super(props);
 
         this.state = {
-            form: {
-                fieldSize: FieldSizeEnum.Small
-            },
-            data: this.createData(FieldSizeEnum.Small)
+            form: {},
+            data: this.createData(FieldSizeEnum.Small),
+            fieldSize: FieldSizeEnum.Small,
+            startPercent: StartPercentEnum.Medium
         };
     }
 
@@ -47,11 +54,18 @@ export class GameLife extends React.PureComponent<GameLifeProps, GameLifeState> 
         event.preventDefault();
         const fieldSize: number = _.toInteger(event.currentTarget.getAttribute('data-size'));
 
-        this.setState({ form: { fieldSize }, data: this.createData(fieldSize) });
+        this.setState({ fieldSize, data: this.createData(fieldSize) });
+    }
+
+    handleStartPercent = (event: React.MouseEvent<HTMLButtonElement>):void => {
+        event.preventDefault();
+        const startPercent: number = _.toInteger(event.currentTarget.getAttribute('data-percent'));
+
+        this.setState({ startPercent });
     }
 
     render() {
-        const { data, form: { fieldSize } } = this.state;
+        const { data, fieldSize, startPercent } = this.state;
 
         return (
             <>
@@ -75,6 +89,28 @@ export class GameLife extends React.PureComponent<GameLifeProps, GameLifeState> 
                             onClick={this.handleFieldSize}
                     >
                         100x80
+                    </Button>
+                </div>
+                <div css={css({
+                    marginBottom: '20px'
+                })}>
+                    <Button selected={startPercent === StartPercentEnum.Small}
+                            data-percent={StartPercentEnum.Small}
+                            onClick={this.handleStartPercent}
+                    >
+                        10%
+                    </Button>
+                    <Button selected={startPercent === StartPercentEnum.Medium}
+                            data-percent={StartPercentEnum.Medium}
+                            onClick={this.handleStartPercent}
+                    >
+                        30%
+                    </Button>
+                    <Button selected={startPercent === StartPercentEnum.Big}
+                            data-percent={StartPercentEnum.Big}
+                            onClick={this.handleStartPercent}
+                    >
+                        50%
                     </Button>
                 </div>
                 <div css={css({
