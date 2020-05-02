@@ -21,3 +21,16 @@ export enum AgeEnum {
     Big='red',
     Empty='white'
 }
+
+export enum SpeedEnum {
+    Small=1,
+    Medium,
+    Big
+}
+
+export enum OperationEnum {
+    Slower='Slower',
+    Pause='Pause',
+    Play='Play',
+    Faster='Faster'
+}

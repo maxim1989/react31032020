@@ -1,39 +1,27 @@
 import React from 'react';
 import _ from 'lodash';
 import { css } from '@emotion/core';
-import styled from '@emotion/styled';
 
-import { FieldSizeEnum, StartPercentEnum, AgeEnum } from '@shared/enums';
+import { FieldSizeEnum, StartPercentEnum, AgeEnum, SpeedEnum, OperationEnum } from '@shared/enums';
 import { randomInteger } from '@shared/utils';
 import { Cell, CellInterface } from './components/Cell';
-
-interface ButtonProps {
-    selected: boolean;
-    'data-size'?: number;
-    'data-percent'?: number;
-}
-
-const Button = styled.button<ButtonProps>`
-  background-color: ${props => props.selected ? 'grey' : '#fff'};
-  margin-right: 5px;
-  width: 100px;
-  &:last-child {
-      margin-right: 0;
-  }
-`;
+import { BlockSize, HandleFieldSize } from './components/BlockSize';
+import { BlockStartPercent, HandleStartPercent } from './components/BlockStartPercent';
+import { Pult, HandlePult } from './components/Pult';
+import { Button } from './components/components/Button';
 
 type FieldSize = FieldSizeEnum.Small | FieldSizeEnum.Medium | FieldSizeEnum.Big;
 type StartPercent = StartPercentEnum.Small | StartPercentEnum.Medium | StartPercentEnum.Big;
+type Speed = SpeedEnum.Small | SpeedEnum.Medium | SpeedEnum.Big;
 type RandomStoreType = { [key: number]: boolean };
-
-interface FormInterface {};
 
 interface GameLifeProps {};
 interface GameLifeState {
-    form: FormInterface;
     data: CellInterface[];
     fieldSize: FieldSize;
-    startPercent: StartPercent
+    startPercent: StartPercent,
+    speed: Speed,
+    active: boolean
 };
 
 export class GameLife extends React.PureComponent<GameLifeProps, GameLifeState> {
@@ -41,10 +29,12 @@ export class GameLife extends React.PureComponent<GameLifeProps, GameLifeState> 
         super(props);
 
         this.state = {
-            form: {},
-            data: this.createData(FieldSizeEnum.Small, StartPercentEnum.Medium),
+            // data: this.createData(FieldSizeEnum.Small, StartPercentEnum.Medium), HW 30.04.2020
+            data: this.createData(FieldSizeEnum.Small),
             fieldSize: FieldSizeEnum.Small,
-            startPercent: StartPercentEnum.Medium
+            startPercent: StartPercentEnum.Medium,
+            speed: SpeedEnum.Small,
+            active: false
         };
     }
 
@@ -64,12 +54,14 @@ export class GameLife extends React.PureComponent<GameLifeProps, GameLifeState> 
         return store;
     }
 
-    createData = (l: FieldSize, p: StartPercent):CellInterface[] => {
+    createData = (l: FieldSize):CellInterface[] => {
+    // createData = (l: FieldSize, p: StartPercent):CellInterface[] => { HW 30.04.2020
         const dataLength: number = l * (l - 20);
-        const randomNumbers: RandomStoreType = this.generateRandomNumbers(l, p);
+        // const randomNumbers: RandomStoreType = this.generateRandomNumbers(l, p); HW 30.04.2020
         
         return [...new Array(dataLength)].map((_, index): CellInterface => {
-            const age: string = randomNumbers[index] ? AgeEnum.Small : AgeEnum.Empty;
+            // const age: string = randomNumbers[index] ? AgeEnum.Small : AgeEnum.Empty; HW 30.04.2020
+            const age: string = AgeEnum.Empty;
 
             return {
                 position: index,
@@ -78,69 +70,72 @@ export class GameLife extends React.PureComponent<GameLifeProps, GameLifeState> 
         });
     }
 
-    handleFieldSize = (event: React.MouseEvent<HTMLButtonElement>):void => {
+    handleFieldSize: HandleFieldSize = (event) => {
         event.preventDefault();
         const fieldSize: number = _.toInteger(event.currentTarget.getAttribute('data-size'));
-        const { startPercent } = this.state;
 
-        this.setState({ fieldSize, data: this.createData(fieldSize, startPercent) });
+        this.setState({ fieldSize, active: false });
     }
 
-    handleStartPercent = (event: React.MouseEvent<HTMLButtonElement>):void => {
+    handleStartPercent: HandleStartPercent = (event) => {
         event.preventDefault();
         const startPercent: number = _.toInteger(event.currentTarget.getAttribute('data-percent'));
 
-        this.setState({ startPercent });
+        this.setState({ startPercent, active: false });
+    }
+
+    handlePult: HandlePult = (event) => {
+        event.preventDefault();
+        const operation: string = event.currentTarget.getAttribute('data-operation');
+        const { speed } = this.state;
+
+        switch (operation) {
+            case OperationEnum.Slower:
+                this.setState({ speed: speed - 1 });
+                break;
+            case OperationEnum.Pause:
+                this.setState({ active: false });
+                break;
+            case OperationEnum.Play:
+                this.setState({ active: true });
+                break;
+            case OperationEnum.Faster:
+                this.setState({ speed: speed + 1 });
+                break;
+            default:
+                break;
+        }
+    }
+
+    handleReset: (event: React.MouseEvent<HTMLButtonElement>) => void = (event) => {
+        event.preventDefault();
+        // const { fieldSize, startPercent } = this.state; HW 30.04.2020
+        const { fieldSize } = this.state;
+
+        this.setState({
+            // data: this.createData(fieldSize, startPercent), HW 30.04.2020
+            data: this.createData(fieldSize),
+            active: false,
+
+        });
     }
 
     render() {
-        const { data, fieldSize, startPercent } = this.state;
+        const { data, fieldSize, startPercent, speed, active } = this.state;
 
         return (
             <>
-                <div css={css({
-                    marginBottom: '20px'
-                })}>
-                    <Button selected={fieldSize === FieldSizeEnum.Small}
-                            data-size={FieldSizeEnum.Small}
-                            onClick={this.handleFieldSize}
-                    >
-                        50x30
-                    </Button>
-                    <Button selected={fieldSize === FieldSizeEnum.Medium}
-                            data-size={FieldSizeEnum.Medium}
-                            onClick={this.handleFieldSize}
-                    >
-                        70x50
-                    </Button>
-                    <Button selected={fieldSize === FieldSizeEnum.Big}
-                            data-size={FieldSizeEnum.Big}
-                            onClick={this.handleFieldSize}
-                    >
-                        100x80
-                    </Button>
+                <div css={css({ marginBottom: '20px' })}>
+                    <BlockSize fieldSize={fieldSize} handleFieldSize={this.handleFieldSize}/>
                 </div>
-                <div css={css({
-                    marginBottom: '20px'
-                })}>
-                    <Button selected={startPercent === StartPercentEnum.Small}
-                            data-percent={StartPercentEnum.Small}
-                            onClick={this.handleStartPercent}
-                    >
-                        10%
-                    </Button>
-                    <Button selected={startPercent === StartPercentEnum.Medium}
-                            data-percent={StartPercentEnum.Medium}
-                            onClick={this.handleStartPercent}
-                    >
-                        30%
-                    </Button>
-                    <Button selected={startPercent === StartPercentEnum.Big}
-                            data-percent={StartPercentEnum.Big}
-                            onClick={this.handleStartPercent}
-                    >
-                        50%
-                    </Button>
+                <div css={css({ marginBottom: '20px' })}>
+                    <BlockStartPercent startPercent={startPercent} handleStartPercent={this.handleStartPercent}/>
+                </div>
+                <div css={css({ marginBottom: '20px' })}>
+                    <Pult speed={speed} active={active} handlePult={this.handlePult}/>
+                </div>
+                <div  css={css({ marginBottom: '20px' })}>
+                    <Button onClick={this.handleReset}>Остановить/сбросить</Button>
                 </div>
                 <div css={css({
                      display: 'flex',
