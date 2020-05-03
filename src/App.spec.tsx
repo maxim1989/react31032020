@@ -1,20 +1,21 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 
 import { App } from './App';
+import { Auth } from './components/Auth';
 
 describe('Тесты App:', () => {
-    it('setUser:', () => {
-        const wrapper = shallow(<App />);
-        const nameInput = wrapper.find('input[type="text"]');
+    it('написать текст в поле "Введите ваше имя":', () => {
+        const wrapper = mount(<App />);
+        const nameInput = wrapper.find(Auth).find('input[type="text"]');
 
         nameInput.simulate('change', { target: { value: 'My Name' } });
 
         expect(wrapper.find('input[type="text"]').prop('value')).toBe('My Name');
     });
 
-    it('onSubmit:', () => {
-        const wrapper = shallow(<App />);
+    it('нажать кнорку "start", когда поле "Введите ваше имя" пустое:', () => {
+        const wrapper = mount(<App />).find(Auth);
         const submitInput = wrapper.find('input[type="submit"]');
 
         submitInput.simulate('click');
@@ -22,8 +23,8 @@ describe('Тесты App:', () => {
         expect(wrapper.find('input[type="text"]').prop('value')).toBe('');
     });
 
-    it('setUser, onSubmit:', () => {
-        const wrapper = shallow(<App />);
+    it('нажать кнорку "start", когда поле "Введите ваше имя" заполнено:', () => {
+        const wrapper = mount(<App />).find(Auth);
         const nameInput = wrapper.find('input[type="text"]');
         const submitInput = wrapper.find('input[type="submit"]');
 

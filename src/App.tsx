@@ -1,4 +1,4 @@
-import React, { useCallback, useState, SetStateAction } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   Switch,
   Route,
@@ -8,6 +8,7 @@ import { css } from '@emotion/core';
 
 import { Game } from './components/Game';
 import { GameLife } from './components/GameLife';
+import { Auth, SubmitType, ChangeType } from './components/Auth';
 
 const headerStyle = css`
     margin-bottom: 20px;
@@ -16,6 +17,15 @@ const headerStyle = css`
 
 const gameLifeLinkStyle = css`
     margin-right: 20px;
+
+    &:last-child {
+        margin-right: 0;
+    };
+
+    &.active {
+        color: red;
+        font-weight: bold;
+    };
 `;
 
 interface AppProps {}
@@ -23,55 +33,38 @@ interface AppProps {}
 export const App: React.FC<AppProps> = () => {
     const [auth, setAuth] = useState(false);
     const [user, setUser] = useState('');
-    const onChange = useCallback((e) => {
+    const onChange: ChangeType = useCallback((e) => {
       setUser(e.target.value);
     }, []);
-    const onSubmit = useCallback((e) => {
+    const onSubmit: SubmitType = useCallback((e) => {
         e.preventDefault();
 
-        if (e.target[0].value) {
+        if (user) {
             setAuth(true);
         }
-    }, []);
+    }, [user]);
 
     if (!auth) {
-        return (
-            <div css={css({
-                height: '100%',
-                width: '100%',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center'
-            })}>
-                <form onSubmit={onSubmit}>
-                    <label>
-                        <p css={css({
-                          height: '100%',
-                          width: '100%'
-                        })}>
-                            Введите ваше имя
-                        </p>
-                        <input type="text" value={user} onChange={onChange} required/>
-                        <input type="submit"/>
-                    </label>
-                </form>
-            </div>
-        );
+        return <Auth user={user} onChange={onChange} onSubmit={onSubmit}/>;
     }
   
     return (
         <>
           <header css={headerStyle}>
-              <NavLink exact to="/" activeStyle={{ color: 'red', fontWeight: 'bold' }} css={gameLifeLinkStyle}>
+              <NavLink exact to="/" css={gameLifeLinkStyle}>
                   Игра-жизнь
               </NavLink>
-              <NavLink to="/circle-cross" activeStyle={{ color: 'red', fontWeight: 'bold' }} >
+              <NavLink to="/circle-cross" css={gameLifeLinkStyle}>
                   Крестики нолики
               </NavLink>
             </header>
             <Switch>
-                <Route exact path="/" render={() => <GameLife />} />
-                <Route path="/circle-cross" render={() => <Game />} />
+                <Route exact path="/">
+                    <GameLife />
+                </Route>
+                <Route path="/circle-cross">
+                    <Game />
+                </Route>
             </Switch>
         </>
     );

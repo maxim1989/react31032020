@@ -1,5 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Button: not selected: 1`] = `"<button selected=\\"\\" class=\\"css-a4u649-Button e2argv40\\"></button>"`;
-
-exports[`Button: selected: 1`] = `"<button selected=\\"\\" class=\\"css-a4u649-Button e2argv40\\"></button>"`;

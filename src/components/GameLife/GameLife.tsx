@@ -1,5 +1,4 @@
 import React from 'react';
-import _ from 'lodash';
 import { css } from '@emotion/core';
 
 import { FieldSizeEnum, StartPercentEnum, AgeEnum, SpeedEnum, OperationEnum } from '@shared/enums';
@@ -15,7 +14,6 @@ type StartPercent = StartPercentEnum.Small | StartPercentEnum.Medium | StartPerc
 type Speed = SpeedEnum.Small | SpeedEnum.Medium | SpeedEnum.Big;
 type RandomStoreType = { [key: number]: boolean };
 
-interface GameLifeProps {};
 interface GameLifeState {
     data: CellInterface[];
     fieldSize: FieldSize;
@@ -24,8 +22,8 @@ interface GameLifeState {
     active: boolean
 };
 
-export class GameLife extends React.PureComponent<GameLifeProps, GameLifeState> {
-    constructor(props: GameLifeProps) {
+export class GameLife extends React.PureComponent<{}, GameLifeState> {
+    constructor(props: {}) {
         super(props);
 
         this.state = {
@@ -42,12 +40,14 @@ export class GameLife extends React.PureComponent<GameLifeProps, GameLifeState> 
         const store: RandomStoreType = {};
         const max = fieldSize * (fieldSize - 20) - 1;
         const storeLength = Math.round(startPercent * max / 100);
+        let count:number = 0;
 
-        while (Object.keys(store).length < storeLength) {
+        while (count < storeLength) {
             const num: number = randomInteger(0, max);
 
             if (!store[num]) {
                 store[num] = true;
+                count++;
             }
         }
 
@@ -59,39 +59,35 @@ export class GameLife extends React.PureComponent<GameLifeProps, GameLifeState> 
         const dataLength: number = l * (l - 20);
         // const randomNumbers: RandomStoreType = this.generateRandomNumbers(l, p); HW 30.04.2020
         
-        return [...new Array(dataLength)].map((_, index): CellInterface => {
-            // const age: string = randomNumbers[index] ? AgeEnum.Small : AgeEnum.Empty; HW 30.04.2020
+        return [...new Array(dataLength)].map((_, position): CellInterface => {
+            // const age: string = randomNumbers[position] ? AgeEnum.Small : AgeEnum.Empty; HW 30.04.2020
             const age: string = AgeEnum.Empty;
 
             return {
-                position: index,
+                position,
                 age 
             };
         });
     }
 
     handleFieldSize: HandleFieldSize = (event) => {
-        event.preventDefault();
-        const fieldSize: number = _.toInteger(event.currentTarget.getAttribute('data-size'));
+        const fieldSize: number = parseInt(event.currentTarget.getAttribute('data-size'));
 
         this.setState({ fieldSize, active: false });
     }
 
     handleStartPercent: HandleStartPercent = (event) => {
-        event.preventDefault();
-        const startPercent: number = _.toInteger(event.currentTarget.getAttribute('data-percent'));
+        const startPercent: number = parseInt(event.currentTarget.getAttribute('data-percent'));
 
         this.setState({ startPercent, active: false });
     }
 
     handlePult: HandlePult = (event) => {
-        event.preventDefault();
         const operation: string = event.currentTarget.getAttribute('data-operation');
-        const { speed } = this.state;
 
         switch (operation) {
             case OperationEnum.Slower:
-                this.setState({ speed: speed - 1 });
+                this.setState(state => ({ speed: state.speed - 1 }));
                 break;
             case OperationEnum.Pause:
                 this.setState({ active: false });
@@ -100,7 +96,7 @@ export class GameLife extends React.PureComponent<GameLifeProps, GameLifeState> 
                 this.setState({ active: true });
                 break;
             case OperationEnum.Faster:
-                this.setState({ speed: speed + 1 });
+                this.setState(state => ({ speed: state.speed + 1 }));
                 break;
             default:
                 break;
