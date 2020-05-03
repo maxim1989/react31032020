@@ -1,6 +1,5 @@
 import React from 'react';
 import { css } from '@emotion/core';
-import _ from 'lodash';
 
 import {
     Item,
@@ -56,7 +55,7 @@ export class Game extends React.PureComponent<GameProps, GameState> {
     }
 
     onItemClick: TypeHandleClick = (event) => {
-        const currentPosition: number = _.toInteger(event.currentTarget.getAttribute('data-position'));
+        const currentPosition: number = parseInt(event.currentTarget.getAttribute('data-position'));
         const { data, step } = this.state;
         let nextStep = step;
         const newData = data.map((item) => {

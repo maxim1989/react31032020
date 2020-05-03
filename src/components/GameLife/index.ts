@@ -1,0 +1,1 @@
+export { GameLife } from './GameLife';
