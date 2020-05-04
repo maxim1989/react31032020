@@ -51,6 +51,7 @@ export const App: React.FC<AppProps> = () => {
     return (
         <>
           <header css={headerStyle}>
+              <p css={css`margin: 0;`}>Вы вошли как {user}.</p>
               <NavLink exact to="/" css={gameLifeLinkStyle}>
                   Игра-жизнь
               </NavLink>
