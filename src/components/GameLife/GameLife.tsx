@@ -9,12 +9,12 @@ import { BlockStartPercent, HandleStartPercent } from './components/BlockStartPe
 import { Pult, HandlePult } from './components/Pult';
 import { Button } from './components/components/Button';
 
-type FieldSize = FieldSizeEnum.Small | FieldSizeEnum.Medium | FieldSizeEnum.Big;
-type StartPercent = StartPercentEnum.Small | StartPercentEnum.Medium | StartPercentEnum.Big;
+export type FieldSize = FieldSizeEnum.Small | FieldSizeEnum.Medium | FieldSizeEnum.Big;
+export type StartPercent = StartPercentEnum.Small | StartPercentEnum.Medium | StartPercentEnum.Big;
 type Speed = SpeedEnum.Small | SpeedEnum.Medium | SpeedEnum.Big;
 type RandomStoreType = { [key: number]: boolean };
 
-interface GameLifeState {
+export interface GameLifeState {
     data: CellInterface[];
     fieldSize: FieldSize;
     startPercent: StartPercent,
@@ -27,11 +27,10 @@ export class GameLife extends React.PureComponent<{}, GameLifeState> {
         super(props);
 
         this.state = {
-            // data: this.createData(FieldSizeEnum.Small, StartPercentEnum.Medium), HW 30.04.2020
-            data: this.createData(FieldSizeEnum.Small),
+            data: this.createData(FieldSizeEnum.Small, StartPercentEnum.Medium),
             fieldSize: FieldSizeEnum.Small,
             startPercent: StartPercentEnum.Medium,
-            speed: SpeedEnum.Small,
+            speed: SpeedEnum.Medium,
             active: false
         };
     }
@@ -54,14 +53,12 @@ export class GameLife extends React.PureComponent<{}, GameLifeState> {
         return store;
     }
 
-    createData = (l: FieldSize):CellInterface[] => {
-    // createData = (l: FieldSize, p: StartPercent):CellInterface[] => { HW 30.04.2020
+    createData = (l: FieldSize, p: StartPercent):CellInterface[] => {
         const dataLength: number = l * (l - 20);
-        // const randomNumbers: RandomStoreType = this.generateRandomNumbers(l, p); HW 30.04.2020
+        const randomNumbers: RandomStoreType = this.generateRandomNumbers(l, p);
         
         return [...new Array(dataLength)].map((_, position): CellInterface => {
-            // const age: string = randomNumbers[position] ? AgeEnum.Small : AgeEnum.Empty; HW 30.04.2020
-            const age: string = AgeEnum.Empty;
+            const age: string = randomNumbers[position] ? AgeEnum.Small : AgeEnum.Empty;
 
             return {
                 position,
@@ -78,7 +75,7 @@ export class GameLife extends React.PureComponent<{}, GameLifeState> {
 
     handleStartPercent: HandleStartPercent = (event) => {
         const startPercent: number = parseInt(event.currentTarget.getAttribute('data-percent'));
-
+        
         this.setState({ startPercent, active: false });
     }
 
@@ -103,16 +100,10 @@ export class GameLife extends React.PureComponent<{}, GameLifeState> {
         }
     }
 
-    handleReset: (event: React.MouseEvent<HTMLButtonElement>) => void = (event) => {
-        event.preventDefault();
-        // const { fieldSize, startPercent } = this.state; HW 30.04.2020
-        const { fieldSize } = this.state;
-
+    handleReset: (event: React.MouseEvent<HTMLButtonElement>) => void = () => {
         this.setState({
-            // data: this.createData(fieldSize, startPercent), HW 30.04.2020
-            data: this.createData(fieldSize),
-            active: false,
-
+            data: this.createData(FieldSizeEnum.Small, StartPercentEnum.Medium),
+            active: false
         });
     }
 
@@ -131,7 +122,7 @@ export class GameLife extends React.PureComponent<{}, GameLifeState> {
                     <Pult speed={speed} active={active} handlePult={this.handlePult}/>
                 </div>
                 <div  css={css({ marginBottom: '20px' })}>
-                    <Button onClick={this.handleReset}>Остановить/сбросить</Button>
+                    <Button name="reset" onClick={this.handleReset}>Остановить/сбросить</Button>
                 </div>
                 <div css={css({
                      display: 'flex',
