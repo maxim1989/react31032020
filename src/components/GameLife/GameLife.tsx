@@ -69,17 +69,13 @@ export class GameLife extends React.PureComponent<{}, GameLifeState> {
 
     handleFieldSize: HandleFieldSize = (event) => {
         const fieldSize: number = parseInt(event.currentTarget.getAttribute('data-size'));
-        // const { startPercent } = this.state;
 
-        // this.setState({ fieldSize, active: false, data: this.createData(fieldSize, startPercent) }); TODO Нужна функция updateData
         this.setState({ fieldSize, active: false });
     }
 
     handleStartPercent: HandleStartPercent = (event) => {
         const startPercent: number = parseInt(event.currentTarget.getAttribute('data-percent'));
-        // const { fieldSize } = this.state;
-
-        // this.setState({ startPercent, active: false, data: this.createData(fieldSize, startPercent) }); TODO Нужна функция updateData
+        
         this.setState({ startPercent, active: false });
     }
 

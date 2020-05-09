@@ -20,160 +20,133 @@ class Instance extends React.Component<{}, GameLifeState> {
 }
 
 describe('Тестирование компонента GameLife:', () => {
+    let wrapper: any;
+    let instance: any;
+
+    beforeEach(() => {
+        wrapper = mount<Instance>(<GameLife />);
+        instance = wrapper.instance();
+    });
+
     it('Создание объекта, содержащего переданное количество целых чисел, generateRandomNumbers(FieldSizeEnum.Small, StartPercentEnum.Small)', () => {
-        const wrapper = shallow<Instance>(<GameLife />);
-        const instance = wrapper.instance();
         const result = instance.generateRandomNumbers(FieldSizeEnum.Small, StartPercentEnum.Small);
 
         expect(Object.keys(result).length).toBe(150);
     });
     
     it('Создание объекта, содержащего переданное количество целых чисел, generateRandomNumbers(FieldSizeEnum.Small, StartPercentEnum.Medium)', () => {
-        const wrapper = shallow<Instance>(<GameLife />);
-        const instance = wrapper.instance();
         const result = instance.generateRandomNumbers(FieldSizeEnum.Small, StartPercentEnum.Medium);
 
         expect(Object.keys(result).length).toBe(450);
     });
     
     it('Создание объекта, содержащего переданное количество целых чисел, generateRandomNumbers(FieldSizeEnum.Small, StartPercentEnum.Big)', () => {
-        const wrapper = shallow<Instance>(<GameLife />);
-        const instance = wrapper.instance();
         const result = instance.generateRandomNumbers(FieldSizeEnum.Small, StartPercentEnum.Big);
 
         expect(Object.keys(result).length).toBe(750);
     });
 
     it('Создание объекта, содержащего переданное количество целых чисел, generateRandomNumbers(FieldSizeEnum.Medium, StartPercentEnum.Small)', () => {
-        const wrapper = shallow<Instance>(<GameLife />);
-        const instance = wrapper.instance();
         const result = instance.generateRandomNumbers(FieldSizeEnum.Medium, StartPercentEnum.Small);
 
         expect(Object.keys(result).length).toBe(350);
     });
     
     it('Создание объекта, содержащего переданное количество целых чисел, generateRandomNumbers(FieldSizeEnum.Medium, StartPercentEnum.Medium)', () => {
-        const wrapper = shallow<Instance>(<GameLife />);
-        const instance = wrapper.instance();
         const result = instance.generateRandomNumbers(FieldSizeEnum.Medium, StartPercentEnum.Medium);
 
         expect(Object.keys(result).length).toBe(1050);
     });
     
     it('Создание объекта, содержащего переданное количество целых чисел, generateRandomNumbers(FieldSizeEnum.Medium, StartPercentEnum.Big)', () => {
-        const wrapper = shallow<Instance>(<GameLife />);
-        const instance = wrapper.instance();
         const result = instance.generateRandomNumbers(FieldSizeEnum.Medium, StartPercentEnum.Big);
 
         expect(Object.keys(result).length).toBe(1750);
     });
 
     it('Создание объекта, содержащего переданное количество целых чисел, generateRandomNumbers(FieldSizeEnum.Big, StartPercentEnum.Small)', () => {
-        const wrapper = shallow<Instance>(<GameLife />);
-        const instance = wrapper.instance();
         const result = instance.generateRandomNumbers(FieldSizeEnum.Big, StartPercentEnum.Small);
 
         expect(Object.keys(result).length).toBe(800);
     });
     
     it('Создание объекта, содержащего переданное количество целых чисел, generateRandomNumbers(FieldSizeEnum.Big, StartPercentEnum.Medium)', () => {
-        const wrapper = shallow<Instance>(<GameLife />);
-        const instance = wrapper.instance();
         const result = instance.generateRandomNumbers(FieldSizeEnum.Big, StartPercentEnum.Medium);
 
         expect(Object.keys(result).length).toBe(2400);
     });
     
     it('Создание объекта, содержащего переданное количество целых чисел, generateRandomNumbers(FieldSizeEnum.Big, StartPercentEnum.Big)', () => {
-        const wrapper = shallow<Instance>(<GameLife />);
-        const instance = wrapper.instance();
         const result = instance.generateRandomNumbers(FieldSizeEnum.Big, StartPercentEnum.Big);
 
         expect(Object.keys(result).length).toBe(4000);
     });
     
     it('Создание массива ячеек, createData(FieldSizeEnum.Small, StartPercentEnum.Small)', () => {
-        const wrapper = shallow<Instance>(<GameLife />);
-        const instance = wrapper.instance();
         const result = instance.createData(FieldSizeEnum.Small, StartPercentEnum.Small);
-        const filledCount = result.filter(item => item.age === AgeEnum.Small);
+        const filledCount = result.filter((item: CellInterface) => item.age === AgeEnum.Small);
 
         expect(result.length).toBe(1500);
         expect(filledCount.length).toBe(150);
     });
     
     it('Создание массива ячеек, createData(FieldSizeEnum.Small, StartPercentEnum.Medium)', () => {
-        const wrapper = shallow<Instance>(<GameLife />);
-        const instance = wrapper.instance();
         const result = instance.createData(FieldSizeEnum.Small, StartPercentEnum.Medium);
-        const filledCount = result.filter(item => item.age === AgeEnum.Small);
+        const filledCount = result.filter((item: CellInterface) => item.age === AgeEnum.Small);
 
         expect(result.length).toBe(1500);
         expect(filledCount.length).toBe(450);
     });
     
     it('Создание массива ячеек, createData(FieldSizeEnum.Small, StartPercentEnum.Big)', () => {
-        const wrapper = shallow<Instance>(<GameLife />);
-        const instance = wrapper.instance();
         const result = instance.createData(FieldSizeEnum.Small, StartPercentEnum.Big);
-        const filledCount = result.filter(item => item.age === AgeEnum.Small);
+        const filledCount = result.filter((item: CellInterface) => item.age === AgeEnum.Small);
 
         expect(result.length).toBe(1500);
         expect(filledCount.length).toBe(750);
     });
     
     it('Создание массива ячеек, createData(FieldSizeEnum.Medium, StartPercentEnum.Small)', () => {
-        const wrapper = shallow<Instance>(<GameLife />);
-        const instance = wrapper.instance();
         const result = instance.createData(FieldSizeEnum.Medium, StartPercentEnum.Small);
-        const filledCount = result.filter(item => item.age === AgeEnum.Small);
+        const filledCount = result.filter((item: CellInterface) => item.age === AgeEnum.Small);
 
         expect(result.length).toBe(3500);
         expect(filledCount.length).toBe(350);
     });
     
     it('Создание массива ячеек, createData(FieldSizeEnum.Medium, StartPercentEnum.Medium)', () => {
-        const wrapper = shallow<Instance>(<GameLife />);
-        const instance = wrapper.instance();
         const result = instance.createData(FieldSizeEnum.Medium, StartPercentEnum.Medium);
-        const filledCount = result.filter(item => item.age === AgeEnum.Small);
+        const filledCount = result.filter((item: CellInterface) => item.age === AgeEnum.Small);
 
         expect(result.length).toBe(3500);
         expect(filledCount.length).toBe(1050);
     });
     
     it('Создание массива ячеек, createData(FieldSizeEnum.Medium, StartPercentEnum.Big)', () => {
-        const wrapper = shallow<Instance>(<GameLife />);
-        const instance = wrapper.instance();
         const result = instance.createData(FieldSizeEnum.Medium, StartPercentEnum.Big);
-        const filledCount = result.filter(item => item.age === AgeEnum.Small);
+        const filledCount = result.filter((item: CellInterface) => item.age === AgeEnum.Small);
 
         expect(result.length).toBe(3500);
         expect(filledCount.length).toBe(1750);
     });
     
     it('Создание массива ячеек, createData(FieldSizeEnum.Big, StartPercentEnum.Small)', () => {
-        const wrapper = shallow<Instance>(<GameLife />);
-        const instance = wrapper.instance();
         const result = instance.createData(FieldSizeEnum.Big, StartPercentEnum.Small);
-        const filledCount = result.filter(item => item.age === AgeEnum.Small);
+        const filledCount = result.filter((item: CellInterface) => item.age === AgeEnum.Small);
 
         expect(result.length).toBe(8000);
         expect(filledCount.length).toBe(800);
     });
     
     it('Создание массива ячеек, createData(FieldSizeEnum.Big, StartPercentEnum.Medium)', () => {
-        const wrapper = shallow<Instance>(<GameLife />);
-        const instance = wrapper.instance();
         const result = instance.createData(FieldSizeEnum.Big, StartPercentEnum.Medium);
-        const filledCount = result.filter(item => item.age === AgeEnum.Small);
+        const filledCount = result.filter((item: CellInterface) => item.age === AgeEnum.Small);
 
         expect(result.length).toBe(8000);
         expect(filledCount.length).toBe(2400);
     });
     
     it('Нажать на кнопку установки размера поля - Small', () => {
-        const wrapper = mount<Instance>(<GameLife />);
         const button = wrapper.find(`button[data-size=${FieldSizeEnum.Small}]`);
 
         button.simulate('click');
@@ -182,7 +155,6 @@ describe('Тестирование компонента GameLife:', () => {
     });
     
     it('Нажать на кнопку установки размера поля - Medium', () => {
-        const wrapper = mount<Instance>(<GameLife />);
         const button = wrapper.find(`button[data-size=${FieldSizeEnum.Medium}]`);
 
         button.simulate('click');
@@ -191,7 +163,6 @@ describe('Тестирование компонента GameLife:', () => {
     });
     
     it('Нажать на кнопку установки размера поля - Big', () => {
-        const wrapper = mount<Instance>(<GameLife />);
         const button = wrapper.find(`button[data-size=${FieldSizeEnum.Big}]`);
 
         button.simulate('click');
@@ -200,7 +171,6 @@ describe('Тестирование компонента GameLife:', () => {
     });
     
     it('Нажать на кнопку установки начального процента заполнения поля - Small', () => {
-        const wrapper = mount<Instance>(<GameLife />);
         const button = wrapper.find(`button[data-percent=${StartPercentEnum.Small}]`);
 
         button.simulate('click');
@@ -209,7 +179,6 @@ describe('Тестирование компонента GameLife:', () => {
     });
     
     it('Нажать на кнопку установки начального процента заполнения поля - Medium', () => {
-        const wrapper = mount<Instance>(<GameLife />);
         const button = wrapper.find(`button[data-percent=${StartPercentEnum.Medium}]`);
 
         button.simulate('click');
@@ -218,7 +187,6 @@ describe('Тестирование компонента GameLife:', () => {
     });
     
     it('Нажать на кнопку установки начального процента заполнения поля - Big', () => {
-        const wrapper = mount<Instance>(<GameLife />);
         const button = wrapper.find(`button[data-percent=${StartPercentEnum.Big}]`);
 
         button.simulate('click');
@@ -227,7 +195,6 @@ describe('Тестирование компонента GameLife:', () => {
     });
     
     it('Нажать на кнопку уменьшения скорости - Slower', () => {
-        const wrapper = mount<Instance>(<GameLife />);
         const button = wrapper.find(`button[data-operation="${OperationEnum.Slower}"]`);
 
         button.simulate('click');
@@ -235,7 +202,6 @@ describe('Тестирование компонента GameLife:', () => {
     });
     
     it('Нажать на кнопку увеличения скорости - Faster', () => {
-        const wrapper = mount<Instance>(<GameLife />);
         const button = wrapper.find(`button[data-operation="${OperationEnum.Faster}"]`);
 
         button.simulate('click');
@@ -243,7 +209,6 @@ describe('Тестирование компонента GameLife:', () => {
     });
     
     it('Нажать на кнопку паузы - Pause', () => {
-        const wrapper = mount<Instance>(<GameLife />);
         const button = wrapper.find(`button[data-operation="${OperationEnum.Pause}"]`);
 
         button.simulate('click');
@@ -251,7 +216,6 @@ describe('Тестирование компонента GameLife:', () => {
     });
     
     it('Нажать на кнопку запуска игры - Play', () => {
-        const wrapper = mount<Instance>(<GameLife />);
         const button = wrapper.find(`button[data-operation="${OperationEnum.Play}"]`);
 
         button.simulate('click');
@@ -259,13 +223,12 @@ describe('Тестирование компонента GameLife:', () => {
     });
     
     it('Сбросить до начальных настроек', () => {
-        const wrapper = mount<Instance>(<GameLife />);
         const button = wrapper.find('button[name="reset"]');
 
         button.simulate('click');
         expect(wrapper.state('active')).toBe(false);
 
-        const filledCount = wrapper.state('data').filter(item => item.age === AgeEnum.Small);
+        const filledCount = wrapper.state('data').filter((item: CellInterface) => item.age === AgeEnum.Small);
 
         expect(wrapper.state('data').length).toBe(1500);
         expect(filledCount.length).toBe(450);
