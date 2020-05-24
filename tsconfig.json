@@ -4,6 +4,10 @@
         "module": "commonjs",
         "target": "es5",
         "jsx": "react",
-        "allowSyntheticDefaultImports": true
+        "allowSyntheticDefaultImports": true,
+        "baseUrl": "./",
+        "paths": {
+            "@shared/*": ["src/shared/*"]
+        }
     }
 }

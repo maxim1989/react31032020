@@ -3,6 +3,7 @@ import {
   Switch,
   Route,
   NavLink,
+  Redirect
 } from 'react-router-dom';
 import { css } from '@emotion/core';
 
@@ -10,6 +11,8 @@ import { Game } from './components/Game';
 import { GameLife } from './components/GameLife';
 import { Auth, SubmitType, ChangeType } from './components/Auth';
 import { Button } from './components/GameLife/components/components/Button';
+import { loginRequired } from '@shared/HOC/LoginRequired';
+import { store } from '@shared/storage/sessionStorage';
 
 const headerStyle = css`
     margin-bottom: 20px;
@@ -51,34 +54,30 @@ export const App: React.FC<AppProps> = () => {
         
         if (user) {
             setAuth(true);
-            sessionStorage.setItem('user', user);
+            store.setItem('user', user);
         }
     }, [user]);
     const onExit: (e: React.MouseEvent<HTMLButtonElement>) => void = useCallback((e) => {
         setAuth(false);
         setUser('');
-        sessionStorage.removeItem('user');
+        store.removeItem('user');
     }, []);
 
     useEffect(() => {
-        const user: string = sessionStorage.getItem('user');
-
-        if (user) {
-            setAuth(true);
-            setUser(user);
-        }
+        store.getItem('user').then(user => {
+            if (user) {
+                setAuth(true);
+                setUser(user);
+            }
+        });
     }, []);
-
-    if (!auth) {
-        return <Auth user={user} onChange={onChange} onSubmit={onSubmit}/>;
-    }
   
     return (
         <>
-            <header css={headerStyle}>
+            {auth && <header css={headerStyle}>
                 <p css={headerLeftStyle}>Вы вошли как <span css={userNameStyle}>{user}</span>.</p>
                 <Button name="exit" onClick={onExit}>Выход</Button>
-            </header>
+            </header>}
             <nav css={navStyle}>
                 <NavLink exact to="/" css={gameLifeLinkStyle}>
                     Игра-жизнь
@@ -88,11 +87,12 @@ export const App: React.FC<AppProps> = () => {
                 </NavLink>
             </nav>
             <Switch>
-                <Route exact path="/">
-                    <GameLife />
-                </Route>
+                <Route exact path="/" component={loginRequired(GameLife, auth)} />
                 <Route path="/circle-cross">
                     <Game />
+                </Route>
+                <Route path="/login">
+                    {auth ? <Redirect to="/"/>: <Auth user={user} onChange={onChange} onSubmit={onSubmit}/>}
                 </Route>
             </Switch>
         </>
