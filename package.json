@@ -57,6 +57,7 @@
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.6",
     "@types/react-router-dom": "^5.1.4",
+    "@types/react-test-renderer": "^16.9.2",
     "@types/webpack": "^4.41.10",
     "@types/webpack-dev-server": "^3.10.1",
     "@typescript-eslint/eslint-plugin": "^2.26.0",
@@ -77,7 +78,7 @@
     "typescript": "^3.8.3",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.10.3"
+    "webpack-dev-server": "^3.11.0"
   },
   "jest": {
     "setupFilesAfterEnv": [
@@ -89,7 +90,9 @@
     "moduleNameMapper": {
       "^@shared(.*)$": "<rootDir>/src/shared$1"
     },
-    "snapshotSerializers": ["jest-emotion"]
+    "snapshotSerializers": [
+      "jest-emotion"
+    ]
   },
   "dependencies": {
     "@emotion/babel-preset-css-prop": "^10.0.27",
