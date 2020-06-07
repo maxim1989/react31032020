@@ -14,13 +14,6 @@ src/lesson17/homework/asyncFlow.ts
 +1 балл за тесты
 +1 балл за разнение по разных файлам и объединение в duck
 */
-
-// Action creators
-export const lessonSeventeenIsLoading = createAction('LESSON_SEVENTEEN_ISLOADING');
-export const lessonSeventeenLoadSuccess = createAction<any>('LESSON_SEVENTEEN_LOAD_SUCCESS');
-export const lessonSeventeenLoadFaild = createAction<any>('LESSON_SEVENTEEN_LOAD_FAILD');
-
-// Thunks
 type LinkType = string | null;
 
 interface ResultItem {
@@ -49,6 +42,12 @@ export interface ResponseInterface {
     results: ResultItem[]
 }
 
+// Action creators
+export const lessonSeventeenIsLoading = createAction('LESSON_SEVENTEEN_ISLOADING');
+export const lessonSeventeenLoadSuccess = createAction<ResponseInterface>('LESSON_SEVENTEEN_LOAD_SUCCESS');
+export const lessonSeventeenLoadFaild = createAction<any>('LESSON_SEVENTEEN_LOAD_FAILD');
+
+// Thunks
 export const fetchLessonSeventeenData = createAsyncThunk(
     'FETCH_LESSON_SEVENTEEN_DATA',
     async () => {
