@@ -1,8 +1,6 @@
 import { createAction, createReducer, createAsyncThunk } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
 
-import { RootState } from '../../';
-
 /*
 Курс React, урок 17: Middlewares
 Домашнее задание 1
