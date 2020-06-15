@@ -9,6 +9,7 @@ import { css } from '@emotion/core';
 
 import { Game } from './components/Game';
 import { GameLife } from './components/GameLife';
+import { LessonSeventeenConnector } from './lesson-17/homework/LessonSeventeen';
 import { Auth, SubmitType, ChangeType } from './components/Auth';
 import { Button } from './components/GameLife/components/components/Button';
 import { loginRequired } from '@shared/HOC/LoginRequired';
@@ -85,11 +86,17 @@ export const App: React.FC<AppProps> = () => {
                 <NavLink to="/circle-cross" css={gameLifeLinkStyle}>
                     Крестики нолики
                 </NavLink>
+                <NavLink to="/lessonSeventeen" css={gameLifeLinkStyle}>
+                    lesson-17
+                </NavLink>
             </nav>
             <Switch>
                 <Route exact path="/" component={loginRequired(GameLife, auth)} />
                 <Route path="/circle-cross">
                     <Game />
+                </Route>
+                <Route path="/lessonSeventeen">
+                    <LessonSeventeenConnector />
                 </Route>
                 <Route path="/login">
                     {auth ? <Redirect to="/"/>: <Auth user={user} onChange={onChange} onSubmit={onSubmit}/>}
