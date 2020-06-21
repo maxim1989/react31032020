@@ -3,130 +3,92 @@ import { mount } from 'enzyme';
 import {
     BrowserRouter as Router
 } from 'react-router-dom';
-import renderer, { act } from 'react-test-renderer';
 
 import { App } from './App';
 import { Auth } from './components/Auth';
-import { Button } from './components/GameLife/components/components/Button';
-import { store, GetItemType, SetItemType, RemoveItemType } from '@shared/storage/sessionStorage';
 
 describe('Тесты App:', () => {
-    let tmpGetItem: GetItemType;
-    let tmpSetItem: SetItemType;
-    let tmpRomoveItem: RemoveItemType;
-    const mockSetItem = jest.fn();
-    const mockRemoveItem = jest.fn();
-    const mockGetItem = jest.fn();
-    // const sessionStorageMock = {
-        // removeItem: mockRemoveItem,
-        // setItem: mockSetItem,
-        // getItem: mockGetItem
-    // };
-
-    // Object.defineProperty(window, 'sessionStorage', {
-        // value: sessionStorageMock
-    // });
-
-    beforeEach(() => {
-        tmpGetItem = store.getItem;
-        tmpSetItem = store.setItem;
-        tmpRomoveItem = store.removeItem;
-        store.getItem = mockGetItem;
-        store.setItem = mockSetItem;
-        mockSetItem.mockReturnValue(Promise.resolve(true));
-        store.removeItem = mockRemoveItem;
-        mockRemoveItem.mockReturnValue(Promise.resolve(true));
-    });
+    const login = jest.fn();
+    const logout = jest.fn();
+    const checkoAuth = jest.fn();
 
     afterEach(() => {
-        mockSetItem.mockReset();
-        mockGetItem.mockReset();
-        mockRemoveItem.mockReset();
-        store.getItem = tmpGetItem;
-        store.setItem = tmpSetItem;
-        store.removeItem = tmpRomoveItem;
+        login.mockReset();
+        logout.mockReset();
+        checkoAuth.mockReset();
     });
 
     it('написать текст в поле "Введите ваше имя":', async () => {
-        mockGetItem.mockReturnValue(Promise.resolve(''));
-        let wrapper;
+        let wrapper = mount(<Router>
+            <App user=""
+                 auth={false}
+                 login={login}
+                 logout={logout}
+                 checkoAuth={checkoAuth}     
+            />
+        </Router>);
 
-        await act(async () => {
-            wrapper = renderer.create(<Router><App /></Router>);
-        });
-
-        const nameInput = wrapper.root.findByType(Auth).findAllByType('input')[0];
+        const nameInput = wrapper.find(Auth).find('input[type="text"]');
             
-        await act(async () => {
-            nameInput.props.onChange({ target: { value: 'My Name' } });
-        });
+        nameInput.simulate('change', { target: { value: 'My Name' } });
 
-        expect(wrapper.root.findByType(Auth).findAllByType('input')[0].props.value).toBe('My Name');
+        expect(wrapper.find(Auth).find('input[type="text"]').prop('value')).toBe('My Name');
+        expect(checkoAuth).toHaveBeenCalledTimes(1);
     });
 
     it('нажать кнорку "start", когда поле "Введите ваше имя" пустое:', async () => {
-        mockGetItem.mockReturnValue(Promise.resolve(''));
-        let wrapper;
+        let wrapper = mount(<Router>
+            <App user=""
+                 auth={false}
+                 login={login}
+                 logout={logout}
+                 checkoAuth={checkoAuth}     
+            />
+        </Router>);
 
-        await act(async () => {
-            wrapper = renderer.create(<Router><App /></Router>);
-        });
+        const form = wrapper.find(Auth).find('form');
+        form.simulate('submit', { preventDefault: function() {} });
 
-        const form = wrapper.root.findByType(Auth).findByType('form');
-        form.props.onSubmit({ preventDefault: function() {} });
-
-        expect(wrapper.root.findByType(Auth).findAllByType('input')[0].props.value).toBe('');
+        expect(wrapper.find(Auth).find('input[type="text"]').prop('value')).toBe('');
+        expect(checkoAuth).toHaveBeenCalledTimes(1);
     });
 
-    it('press "start" button, then field "Введите ваше имя" is fullfilled and check if sessionstorage.setItem was called:', async () => {
-        mockGetItem.mockReturnValue(Promise.resolve(''));
-        let wrapper;
+    it('press "start" button, then field "Введите ваше имя" is fullfilled and check if login was called:', async () => {
+        let wrapper = mount(<Router>
+            <App user=""
+                 auth={false}
+                 login={login}
+                 logout={logout}
+                 checkoAuth={checkoAuth}     
+            />
+        </Router>);
 
-        await act(async () => {
-            wrapper = renderer.create(<Router><App /></Router>);
-        });
+        const form = wrapper.find(Auth).find('form');
+        const nameInput = wrapper.find(Auth).find('input[type="text"]');
 
-        const nameInput = wrapper.root.findByType(Auth).findAllByType('input')[0];
-        const form = wrapper.root.findByType(Auth).findByType('form');
-
-        await act(async () => {
-            nameInput.props.onChange({ target: { value: 'My Name' } });
-        });
-
-        await act(async () => {
-            form.props.onSubmit({ preventDefault: function() {} });
-        });
+        nameInput.simulate('change', { target: { value: 'My Name' } });
+        form.simulate('submit', { preventDefault: function() {} });
         
-        expect(mockGetItem).toHaveBeenCalledTimes(1);
-        expect(mockSetItem).toHaveBeenCalledTimes(1);
+        expect(checkoAuth).toHaveBeenCalledTimes(1);
+        expect(login).toHaveBeenCalledTimes(1);
     });
 
     it('exit from application:', async () => {
-        mockGetItem.mockReturnValue(Promise.resolve(''));
-        let wrapper;
+        let wrapper = mount(<Router>
+            <App user="test user"
+                 auth={true}
+                 login={login}
+                 logout={logout}
+                 checkoAuth={checkoAuth}     
+            />
+        </Router>);
 
-        await act(async () => {
-            wrapper = renderer.create(<Router><App /></Router>);
-        });
-
-        const nameInput = wrapper.root.findByType(Auth).findAllByType('input')[0];
-        const form = wrapper.root.findByType(Auth).findByType('form');
-
-        await act(async () => {
-            nameInput.props.onChange({ target: { value: 'My Name' } });
-        });
-
-        await act(async () => {
-            form.props.onSubmit({ preventDefault: function() {} });
-        });
-
-        const buttonExit = wrapper.root.findAllByType('button').find(item => item.props.name === 'exit');
+        const buttonExit = wrapper.find('button[name="exit"]');
         
-        await act(async () => {
-            buttonExit.props.onClick();
-        });
+        buttonExit.simulate('click');
         
-        expect(mockRemoveItem).toHaveBeenCalledTimes(1);
-        expect(mockRemoveItem).toHaveBeenCalledWith('user');
+        expect(checkoAuth).toHaveBeenCalledTimes(1);
+        expect(login).toHaveBeenCalledTimes(0);
+        expect(logout).toHaveBeenCalledTimes(1);
     });
 });

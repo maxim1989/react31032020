@@ -17,7 +17,6 @@ import { LessonSeventeenConnector } from './lesson-17/homework/LessonSeventeen';
 import { Auth, SubmitType, ChangeType } from './components/Auth';
 import { Button } from './components/GameLife/components/components/Button';
 import { loginRequired } from '@shared/HOC/LoginRequired';
-import { store } from '@shared/storage/sessionStorage';
 
 const headerStyle = css`
     margin-bottom: 20px;
@@ -49,9 +48,9 @@ const userNameStyle = css`font-weight: 800`;
 interface AppProps {
     auth: boolean,
     user: string,
-    login: typeof login,
-    logout: typeof logout,
-    checkoAuth: typeof checkoAuth
+    login: Function,
+    logout: Function,
+    checkoAuth: Function
 }
 
 export const App: React.FC<AppProps> = (props) => {
