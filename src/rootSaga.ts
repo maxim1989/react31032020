@@ -3,7 +3,7 @@ import { put, takeLatest } from 'redux-saga/effects';
 import { login, logout, checkoAuth, saveUserData, removeUserData } from './__data__/actions';
 import { store } from '@shared/storage/sessionStorage';
 
-function* makeLogin({ payload } : ReturnType<typeof login>) {
+export function* makeLogin({ payload } : ReturnType<typeof login>) {
     try {
         yield store.setItem('user', payload);
         yield put(saveUserData(payload));
@@ -12,16 +12,16 @@ function* makeLogin({ payload } : ReturnType<typeof login>) {
     }
 };
 
-function* makeLogout() {
+export function* makeLogout() {
     try {
-        store.removeItem('user');
+        yield store.removeItem('user');
         yield put(removeUserData());
     } catch {
         console.error('LOGOUT_ERROR');
     }
 };
 
-function* makeCheckAuth() {
+export function* makeCheckAuth() {
     const user = yield store.getItem('user');
 
     if (user) {
