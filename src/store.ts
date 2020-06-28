@@ -6,6 +6,7 @@ import rootSaga from './rootSaga';
 
 import { lessonSeventeen } from './lesson-17/homework/asyncFlow';
 import { authication } from './__data__/reducers';
+import gameLife from './components/GameLife/__data__/gameLife';
 import { thunk } from './lesson-17/homework/thunk';
 import { probablity } from './lesson-17/homework/probability';
 
@@ -16,7 +17,8 @@ export const createStore = () => {
     const store = configureStore({
         reducer: combineReducers({
             lessonSeventeen,
-            authication
+            authication,
+            gameLife
         }),
         middleware: [thunk, immutableStateInvariant, serializableStateInvariant, probablity, sagaMiddleware]
     });

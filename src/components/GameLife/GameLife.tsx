@@ -1,40 +1,33 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { css } from '@emotion/core';
 
 import { FieldSizeEnum, StartPercentEnum, AgeEnum, SpeedEnum, OperationEnum } from '@shared/enums';
 import { randomInteger } from '@shared/utils';
+
 import { Cell, CellInterface } from './components/Cell';
 import { BlockSize, HandleFieldSize } from './components/BlockSize';
 import { BlockStartPercent, HandleStartPercent } from './components/BlockStartPercent';
 import { Pult, HandlePult } from './components/Pult';
 import { Button } from './components/components/Button';
 
-export type FieldSize = FieldSizeEnum.Small | FieldSizeEnum.Medium | FieldSizeEnum.Big;
-export type StartPercent = StartPercentEnum.Small | StartPercentEnum.Medium | StartPercentEnum.Big;
-type Speed = SpeedEnum.Small | SpeedEnum.Medium | SpeedEnum.Big;
-type RandomStoreType = { [key: number]: boolean };
+import { GameLifeProps, StartPercent, RandomStoreType, FieldSize } from './GameLifeInterfaces';
+import {
+    updateData,
+    updateFieldSize,
+    updateStartPercent,
+    updateSpeed,
+    updateActive,
+    selectData,
+    selectFieldSize,
+    selectStartPercent,
+    selectSpeed,
+    selectActive
+} from './__data__/gameLife';
 
-export interface GameLifeState {
-    data: CellInterface[];
-    fieldSize: FieldSize;
-    startPercent: StartPercent,
-    speed: Speed,
-    active: boolean
-};
+import { RootState } from '../..';
 
-export class GameLife extends React.PureComponent<{}, GameLifeState> {
-    constructor(props: {}) {
-        super(props);
-
-        this.state = {
-            data: this.createData(FieldSizeEnum.Small, StartPercentEnum.Medium),
-            fieldSize: FieldSizeEnum.Small,
-            startPercent: StartPercentEnum.Medium,
-            speed: SpeedEnum.Medium,
-            active: false
-        };
-    }
-
+export class GameLife extends React.PureComponent<GameLifeProps> {
     generateRandomNumbers = (fieldSize:FieldSize, startPercent:StartPercent): RandomStoreType => {
         const store: RandomStoreType = {};
         const max = fieldSize * (fieldSize - 20) - 1;
@@ -70,30 +63,35 @@ export class GameLife extends React.PureComponent<{}, GameLifeState> {
     handleFieldSize: HandleFieldSize = (event) => {
         const fieldSize: number = parseInt(event.currentTarget.getAttribute('data-size'));
 
-        this.setState({ fieldSize, active: false });
+        this.props.updateActive(false);
+        this.props.updateFieldSize(fieldSize);
+        this.props.updateData(this.createData(fieldSize, this.props.startPercent));
     }
 
     handleStartPercent: HandleStartPercent = (event) => {
         const startPercent: number = parseInt(event.currentTarget.getAttribute('data-percent'));
         
-        this.setState({ startPercent, active: false });
+        this.props.updateActive(false);
+        this.props.updateStartPercent(startPercent);
+        this.props.updateData(this.createData(this.props.fieldSize, startPercent));
     }
 
     handlePult: HandlePult = (event) => {
         const operation: string = event.currentTarget.getAttribute('data-operation');
+        const { speed, updateSpeed } = this.props;
 
         switch (operation) {
             case OperationEnum.Slower:
-                this.setState(state => ({ speed: state.speed - 1 }));
+                updateSpeed(speed - 1);
                 break;
             case OperationEnum.Pause:
-                this.setState({ active: false });
+                this.props.updateActive(false);
                 break;
             case OperationEnum.Play:
-                this.setState({ active: true });
+                this.props.updateActive(true);
                 break;
             case OperationEnum.Faster:
-                this.setState(state => ({ speed: state.speed + 1 }));
+                updateSpeed(speed + 1);
                 break;
             default:
                 break;
@@ -101,14 +99,16 @@ export class GameLife extends React.PureComponent<{}, GameLifeState> {
     }
 
     handleReset: (event: React.MouseEvent<HTMLButtonElement>) => void = () => {
-        this.setState({
-            data: this.createData(FieldSizeEnum.Small, StartPercentEnum.Medium),
-            active: false
-        });
+        const { updateData, updateActive, updateStartPercent, updateFieldSize } = this.props;
+        
+        updateActive(false);
+        updateFieldSize(FieldSizeEnum.Small);
+        updateStartPercent(StartPercentEnum.Medium);
+        updateData(this.createData(FieldSizeEnum.Small, StartPercentEnum.Medium));
     }
 
     render() {
-        const { data, fieldSize, startPercent, speed, active } = this.state;
+        const { data, fieldSize, startPercent, speed, active } = this.props;
 
         return (
             <>
@@ -136,4 +136,28 @@ export class GameLife extends React.PureComponent<{}, GameLifeState> {
             </>
         );
     }
-} 
+
+    componentDidMount() {
+        this.props.updateData(this.createData(FieldSizeEnum.Small, StartPercentEnum.Medium));
+    }
+};
+
+const mapStateToProps = (state: RootState) => {
+    return {
+        data: selectData(state),
+        fieldSize: selectFieldSize(state),
+        startPercent: selectStartPercent(state),
+        speed: selectSpeed(state),
+        active: selectActive(state)
+    };
+};
+
+const mapDispatchToProps = {
+    updateData,
+    updateFieldSize,
+    updateStartPercent,
+    updateSpeed,
+    updateActive
+};
+
+export const GameLifeContainer = connect(mapStateToProps, mapDispatchToProps)(GameLife);

@@ -1,9 +1,10 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 
 import { FieldSizeEnum, StartPercentEnum, AgeEnum, SpeedEnum, OperationEnum } from '@shared/enums';
 
-import { GameLife, GameLifeState, FieldSize, StartPercent } from './GameLife';
+import { GameLife } from './GameLife';
+import { GameLifeState, FieldSize, StartPercent } from './GameLifeInterfaces';
 import { CellInterface } from './components/Cell';
 import { HandleFieldSize } from './components/BlockSize';
 

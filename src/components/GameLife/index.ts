@@ -1,1 +1,1 @@
-export { GameLife } from './GameLife';
+export { GameLife, GameLifeContainer } from './GameLife';

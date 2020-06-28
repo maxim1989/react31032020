@@ -12,7 +12,7 @@ import { login, logout, checkoAuth } from './__data__/actions';
 import { RootState } from '.';
 
 import { Game } from './components/Game';
-import { GameLife } from './components/GameLife';
+import { GameLifeContainer } from './components/GameLife';
 import { LessonSeventeenConnector } from './lesson-17/homework/LessonSeventeen';
 import { Auth, SubmitType, ChangeType } from './components/Auth';
 import { Button } from './components/GameLife/components/components/Button';
@@ -98,7 +98,7 @@ export const App: React.FC<AppProps> = (props) => {
                 </NavLink>
             </nav>
             <Switch>
-                <Route exact path="/" component={loginRequired(GameLife, auth)} />
+                <Route exact path="/" component={loginRequired(GameLifeContainer, auth)} />
                 <Route path="/circle-cross">
                     <Game />
                 </Route>
