@@ -58,7 +58,7 @@ export class GameLife extends React.PureComponent<{}, GameLifeState> {
         const randomNumbers: RandomStoreType = this.generateRandomNumbers(l, p);
         
         return [...new Array(dataLength)].map((_, position): CellInterface => {
-            const age: string = randomNumbers[position] ? AgeEnum.Small : AgeEnum.Empty;
+            const age = randomNumbers[position] ? AgeEnum.Small : AgeEnum.Empty;
 
             return {
                 position,

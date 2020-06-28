@@ -6,6 +6,10 @@ import {
   Redirect
 } from 'react-router-dom';
 import { css } from '@emotion/core';
+import { connect } from 'react-redux';
+
+import { login, logout, checkoAuth } from './__data__/actions';
+import { RootState } from '.';
 
 import { Game } from './components/Game';
 import { GameLife } from './components/GameLife';
@@ -13,7 +17,6 @@ import { LessonSeventeenConnector } from './lesson-17/homework/LessonSeventeen';
 import { Auth, SubmitType, ChangeType } from './components/Auth';
 import { Button } from './components/GameLife/components/components/Button';
 import { loginRequired } from '@shared/HOC/LoginRequired';
-import { store } from '@shared/storage/sessionStorage';
 
 const headerStyle = css`
     margin-bottom: 20px;
@@ -42,35 +45,39 @@ const userNameStyle = css`font-weight: 800`;
 
 
 
-interface AppProps {}
+interface AppProps {
+    auth: boolean,
+    user: string,
+    login: Function,
+    logout: Function,
+    checkoAuth: Function
+}
 
-export const App: React.FC<AppProps> = () => {
-    const [auth, setAuth] = useState(false);
-    const [user, setUser] = useState('');
+export const App: React.FC<AppProps> = (props) => {
+    const { auth, user } = props;
+    const [userInput, setUserInput] = useState('');
     const onChange: ChangeType = useCallback((e) => {
-      setUser(e.target.value);
+        setUserInput(e.target.value);
     }, []);
     const onSubmit: SubmitType = useCallback((e) => {
         e.preventDefault();
         
-        if (user) {
-            setAuth(true);
-            store.setItem('user', user);
+        if (userInput) {
+            const { login } = props;
+
+            login(userInput);
         }
-    }, [user]);
+    }, [userInput]);
     const onExit: (e: React.MouseEvent<HTMLButtonElement>) => void = useCallback((e) => {
-        setAuth(false);
-        setUser('');
-        store.removeItem('user');
+        const { logout } = props;
+
+        logout();
     }, []);
 
     useEffect(() => {
-        store.getItem('user').then(user => {
-            if (user) {
-                setAuth(true);
-                setUser(user);
-            }
-        });
+        const { checkoAuth } = props;
+
+        checkoAuth();
     }, []);
   
     return (
@@ -99,9 +106,22 @@ export const App: React.FC<AppProps> = () => {
                     <LessonSeventeenConnector />
                 </Route>
                 <Route path="/login">
-                    {auth ? <Redirect to="/"/>: <Auth user={user} onChange={onChange} onSubmit={onSubmit}/>}
+                    {auth ? <Redirect to="/"/>: <Auth user={userInput} onChange={onChange} onSubmit={onSubmit}/>}
                 </Route>
             </Switch>
         </>
     );
 };
+
+const mapStateToProps = (state: RootState) => {
+    return {
+        auth: state.authication.auth,
+        user: state.authication.user
+    };
+};
+
+const mapDispatchToProps = {
+    login, logout, checkoAuth
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
