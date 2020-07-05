@@ -2,8 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { css } from '@emotion/core';
 
-import { FieldSizeEnum, StartPercentEnum, AgeEnum, SpeedEnum, OperationEnum } from '@shared/enums';
-import { randomInteger } from '@shared/utils';
+import { FieldSizeEnum, StartPercentEnum, AgeEnum, OperationEnum } from '@shared/enums';
 
 import { Cell, CellInterface } from './components/Cell';
 import { BlockSize, HandleFieldSize } from './components/BlockSize';
@@ -11,9 +10,9 @@ import { BlockStartPercent, HandleStartPercent } from './components/BlockStartPe
 import { Pult, HandlePult } from './components/Pult';
 import { Button } from './components/components/Button';
 
-import { GameLifeProps, StartPercent, RandomStoreType, FieldSize } from './GameLifeInterfaces';
+import { GameLifeProps } from './GameLifeInterfaces';
 import {
-    updateData,
+    calculateData,
     updateFieldSize,
     updateStartPercent,
     updateSpeed,
@@ -28,44 +27,12 @@ import {
 import { RootState } from '../..';
 
 export class GameLife extends React.PureComponent<GameLifeProps> {
-    generateRandomNumbers = (fieldSize:FieldSize, startPercent:StartPercent): RandomStoreType => {
-        const store: RandomStoreType = {};
-        const max = fieldSize * (fieldSize - 20) - 1;
-        const storeLength = Math.round(startPercent * max / 100);
-        let count:number = 0;
-
-        while (count < storeLength) {
-            const num: number = randomInteger(0, max);
-
-            if (!store[num]) {
-                store[num] = true;
-                count++;
-            }
-        }
-
-        return store;
-    }
-
-    createData = (l: FieldSize, p: StartPercent):CellInterface[] => {
-        const dataLength: number = l * (l - 20);
-        const randomNumbers: RandomStoreType = this.generateRandomNumbers(l, p);
-        
-        return [...new Array(dataLength)].map((_, position): CellInterface => {
-            const age = randomNumbers[position] ? AgeEnum.Small : AgeEnum.Empty;
-
-            return {
-                position,
-                age 
-            };
-        });
-    }
-
     handleFieldSize: HandleFieldSize = (event) => {
         const fieldSize: number = parseInt(event.currentTarget.getAttribute('data-size'));
 
         this.props.updateActive(false);
         this.props.updateFieldSize(fieldSize);
-        this.props.updateData(this.createData(fieldSize, this.props.startPercent));
+        this.props.calculateData({fieldSize, startPercent: this.props.startPercent });
     }
 
     handleStartPercent: HandleStartPercent = (event) => {
@@ -73,7 +40,7 @@ export class GameLife extends React.PureComponent<GameLifeProps> {
         
         this.props.updateActive(false);
         this.props.updateStartPercent(startPercent);
-        this.props.updateData(this.createData(this.props.fieldSize, startPercent));
+        this.props.calculateData({fieldSize: this.props.fieldSize, startPercent});
     }
 
     handlePult: HandlePult = (event) => {
@@ -99,12 +66,13 @@ export class GameLife extends React.PureComponent<GameLifeProps> {
     }
 
     handleReset: (event: React.MouseEvent<HTMLButtonElement>) => void = () => {
-        const { updateData, updateActive, updateStartPercent, updateFieldSize } = this.props;
+        const { calculateData, updateActive, updateStartPercent, updateFieldSize } = this.props;
         
         updateActive(false);
         updateFieldSize(FieldSizeEnum.Small);
         updateStartPercent(StartPercentEnum.Medium);
-        updateData(this.createData(FieldSizeEnum.Small, StartPercentEnum.Medium));
+        
+        calculateData({fieldSize: FieldSizeEnum.Small, startPercent: StartPercentEnum.Medium});
     }
 
     render() {
@@ -138,7 +106,7 @@ export class GameLife extends React.PureComponent<GameLifeProps> {
     }
 
     componentDidMount() {
-        this.props.updateData(this.createData(FieldSizeEnum.Small, StartPercentEnum.Medium));
+        this.props.calculateData({fieldSize: FieldSizeEnum.Small, startPercent: StartPercentEnum.Medium});
     }
 };
 
@@ -153,7 +121,7 @@ const mapStateToProps = (state: RootState) => {
 };
 
 const mapDispatchToProps = {
-    updateData,
+    calculateData,
     updateFieldSize,
     updateStartPercent,
     updateSpeed,

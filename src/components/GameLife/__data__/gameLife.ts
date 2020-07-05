@@ -7,11 +7,17 @@ import { GameLifeProps, FieldSize, StartPercent, Speed } from '../GameLifeInterf
 
 import { RootState } from '../../..';
 
+interface CalculateDataInterface {
+    fieldSize: FieldSize,
+    startPercent: StartPercent
+}
+
 export const updateData = createAction<GameLifeProps>('UPDATE_DATA');
 export const updateFieldSize = createAction<FieldSize>('UPDATE_FIELD_SIZE');
 export const updateStartPercent = createAction<StartPercent>('UPDATE_START_PERCENT');
 export const updateSpeed = createAction<Speed>('UPDATE_SPEED');
 export const updateActive = createAction<true | false>('UPDATE_ACTIVE');
+export const calculateData = createAction<CalculateDataInterface>('CALCULATE_DATA');
 
 export const selectData = (state: RootState) => state.gameLife.data;
 export const selectFieldSize = (state: RootState) => state.gameLife.fieldSize;

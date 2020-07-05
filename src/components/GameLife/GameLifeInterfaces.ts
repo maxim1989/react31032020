@@ -13,7 +13,7 @@ export interface GameLifeProps {
     startPercent: StartPercent,
     speed: Speed,
     active: boolean,
-    updateData: Function,
+    calculateData: Function,
     updateFieldSize: Function,
     updateStartPercent: Function,
     updateSpeed: Function,
