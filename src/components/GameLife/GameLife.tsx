@@ -27,8 +27,12 @@ import {
 import { RootState } from '../..';
 
 export class GameLife extends React.PureComponent<GameLifeProps> {
+    timer: any = null;
+
     handleFieldSize: HandleFieldSize = (event) => {
         const fieldSize: number = parseInt(event.currentTarget.getAttribute('data-size'));
+        
+        clearInterval(this.timer);
 
         this.props.updateActive(false);
         this.props.updateFieldSize(fieldSize);
@@ -37,6 +41,8 @@ export class GameLife extends React.PureComponent<GameLifeProps> {
 
     handleStartPercent: HandleStartPercent = (event) => {
         const startPercent: number = parseInt(event.currentTarget.getAttribute('data-percent'));
+        
+        clearInterval(this.timer);
         
         this.props.updateActive(false);
         this.props.updateStartPercent(startPercent);
@@ -50,15 +56,21 @@ export class GameLife extends React.PureComponent<GameLifeProps> {
         switch (operation) {
             case OperationEnum.Slower:
                 updateSpeed(speed - 1);
+                this.props.updateActive(false);
+                clearInterval(this.timer);
                 break;
             case OperationEnum.Pause:
                 this.props.updateActive(false);
+                clearInterval(this.timer);
                 break;
             case OperationEnum.Play:
                 this.props.updateActive(true);
+                this.runTimeOut();
                 break;
             case OperationEnum.Faster:
                 updateSpeed(speed + 1);
+                this.props.updateActive(false);
+                clearInterval(this.timer);
                 break;
             default:
                 break;
@@ -67,12 +79,22 @@ export class GameLife extends React.PureComponent<GameLifeProps> {
 
     handleReset: (event: React.MouseEvent<HTMLButtonElement>) => void = () => {
         const { calculateData, updateActive, updateStartPercent, updateFieldSize } = this.props;
+
+        clearInterval(this.timer);
         
         updateActive(false);
         updateFieldSize(FieldSizeEnum.Small);
         updateStartPercent(StartPercentEnum.Medium);
         
         calculateData({fieldSize: FieldSizeEnum.Small, startPercent: StartPercentEnum.Medium});
+    }
+
+    runTimeOut = () => {
+        const { startPercent, fieldSize, speed } = this.props;
+
+        this.timer = setInterval(() => {
+            this.props.calculateData({fieldSize, startPercent});
+        }, 4000 - 1000 * speed);
     }
 
     render() {
@@ -107,6 +129,10 @@ export class GameLife extends React.PureComponent<GameLifeProps> {
 
     componentDidMount() {
         this.props.calculateData({fieldSize: FieldSizeEnum.Small, startPercent: StartPercentEnum.Medium});
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.timer);
     }
 };
 
