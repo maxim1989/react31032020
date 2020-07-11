@@ -1,5 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
+import { Provider } from 'react-redux';
 import {
     BrowserRouter as Router
 } from 'react-router-dom';
@@ -20,14 +21,16 @@ describe('Тесты App:', () => {
     });
 
     it('написать текст в поле "Введите ваше имя":', async () => {
-        let wrapper = mount(<Router>
-            <App user=""
-                auth={false}
-                login={login}
-                logout={logout}
-                checkoAuth={checkoAuth}
-            />
-        </Router>);
+        let wrapper = mount(<Provider store={createStore()}>
+            <Router>
+                <App user=""
+                    auth={false}
+                    login={login}
+                    logout={logout}
+                    checkoAuth={checkoAuth}
+                />
+            </Router>
+        </Provider>);
 
         const nameInput = wrapper.find(Auth).find('input[type="text"]');
 
@@ -38,14 +41,14 @@ describe('Тесты App:', () => {
     });
 
     it('нажать кнорку "start", когда поле "Введите ваше имя" пустое:', async () => {
-        let wrapper = mount(<Router>
+        let wrapper = mount(<Provider store={createStore()}><Router>
             <App user=""
                 auth={false}
                 login={login}
                 logout={logout}
                 checkoAuth={checkoAuth}
             />
-        </Router>);
+        </Router></Provider>);
 
         const form = wrapper.find(Auth).find('form');
         form.simulate('submit', { preventDefault: function () { } });
@@ -55,14 +58,14 @@ describe('Тесты App:', () => {
     });
 
     it('press "start" button, then field "Введите ваше имя" is fullfilled and check if login was called:', async () => {
-        let wrapper = mount(<Router>
+        let wrapper = mount(<Provider store={createStore()}><Router>
             <App user=""
                 auth={false}
                 login={login}
                 logout={logout}
                 checkoAuth={checkoAuth}
             />
-        </Router>);
+        </Router></Provider>);
 
         const form = wrapper.find(Auth).find('form');
         const nameInput = wrapper.find(Auth).find('input[type="text"]');
@@ -75,14 +78,14 @@ describe('Тесты App:', () => {
     });
 
     it('exit from application:', async () => {
-        let wrapper = mount(<Router>
+        let wrapper = mount(<Provider store={createStore()}><Router>
             <App user="test user"
                 auth={true}
                 login={login}
                 logout={logout}
                 checkoAuth={checkoAuth}
             />
-        </Router>);
+        </Router></Provider>);
 
         const buttonExit = wrapper.find('button[name="exit"]');
 

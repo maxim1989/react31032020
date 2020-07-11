@@ -2,11 +2,10 @@ import React from 'react';
 import { Button } from './components/Button';
 import { OperationEnum, SpeedEnum } from '@shared/enums';
 
-type Speed = OperationEnum.Slower | OperationEnum.Pause | OperationEnum.Play | OperationEnum.Faster;
 export type HandlePult = (event: React.MouseEvent<HTMLButtonElement>) => void;
 
 interface PultProps {
-    speed: Speed;
+    speed: SpeedEnum;
     active: boolean;
     handlePult: HandlePult;
 }
